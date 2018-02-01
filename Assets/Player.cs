@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
     public GameObject projectilePrefab;
     public Text LivesText;
 
+    private Animator anim;
+
     // Use this for initialization
     void Start()
     {
@@ -20,6 +22,7 @@ public class Player : MonoBehaviour
         speed = 4.5f;
         LivesText.text = "Lives: " + lives;
         allowFire = true;
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -29,24 +32,28 @@ public class Player : MonoBehaviour
         float axisY=0;
         Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
         Vector3 screenWorldPos = Camera.main.ScreenToWorldPoint(screenPos);
+        anim.SetFloat("Movimiento", 0.0f);
+        
+            if (Input.GetKey("w"))
+            {
+                axisY = 0.5f;
+            }
+            else if (Input.GetKey("s"))
+            {
+                axisY = -0.5f;
 
-        if (Input.GetKey("w"))
-        {
-            axisY = 0.5f;
-        }
-        else if (Input.GetKey("s"))
-        {
-            axisY = -0.5f;
-        }
-        if (Input.GetKey("d"))
-        {
-            axisX = 0.5f;
-        }
-        else if (Input.GetKey("a"))
-        {
-            axisX = -0.5f;
-        }
-
+            }
+            if (Input.GetKey("d"))
+            {
+                axisX = 0.5f;
+                anim.SetFloat("Movimiento", axisX);
+            }
+            else if (Input.GetKey("a"))
+            {
+                axisX = -0.5f;
+                anim.SetFloat("Movimiento", axisX);
+            }
+        
 
         if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))
             fireRocket();
