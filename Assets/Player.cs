@@ -33,16 +33,18 @@ public class Player : MonoBehaviour
         Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
         Vector3 screenWorldPos = Camera.main.ScreenToWorldPoint(screenPos);
         anim.SetFloat("Movimiento", 0.0f);
-        
-            if (Input.GetKey("w"))
+        anim.SetFloat("MovimientoY", 0.0f);
+
+        if (Input.GetKey("w"))
             {
                 axisY = 0.5f;
-            }
+                anim.SetFloat("MovimientoY", axisY);
+        }
             else if (Input.GetKey("s"))
             {
                 axisY = -0.5f;
-
-            }
+                anim.SetFloat("MovimientoY", axisY);
+        }
             if (Input.GetKey("d"))
             {
                 axisX = 0.5f;
