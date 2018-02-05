@@ -36,29 +36,44 @@ public class Player : MonoBehaviour
         anim.SetFloat("MovimientoY", 0.0f);
 
         if (Input.GetKey("w"))
-            {
-                axisY = 0.5f;
-                anim.SetFloat("MovimientoY", axisY);
+        {
+            axisY = 0.5f;
+            anim.SetFloat("MovimientoY", axisY);
         }
-            else if (Input.GetKey("s"))
-            {
-                axisY = -0.5f;
-                anim.SetFloat("MovimientoY", axisY);
+        else if (Input.GetKey("s"))
+        {
+            axisY = -0.5f;
+            anim.SetFloat("MovimientoY", axisY);
         }
-            if (Input.GetKey("d"))
-            {
-                axisX = 0.5f;
-                anim.SetFloat("Movimiento", axisX);
-            }
-            else if (Input.GetKey("a"))
-            {
-                axisX = -0.5f;
-                anim.SetFloat("Movimiento", axisX);
-            }
+        if (Input.GetKey("d"))
+        {
+            axisX = 0.5f;
+            anim.SetFloat("Movimiento", axisX);
+        }
+        else if (Input.GetKey("a"))
+        {
+            axisX = -0.5f;
+            anim.SetFloat("Movimiento", axisX);
+        }
         
 
         if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))
+        {
+            anim.SetFloat("Movimiento", 0.0f);
+            anim.SetFloat("MovimientoY", 0.0f);
+
+            if (Input.GetKey(KeyCode.RightArrow))
+                anim.SetFloat("Movimiento", 0.5f);
+            if (Input.GetKey(KeyCode.LeftArrow))
+                anim.SetFloat("Movimiento", -0.5f);
+            if (Input.GetKey(KeyCode.UpArrow))
+                anim.SetFloat("MovimientoY", 0.5f);
+            if (Input.GetKey(KeyCode.DownArrow))
+                anim.SetFloat("MovimientoY", -0.5f);
+
             fireRocket();
+        }
+            
 
         if (screenPos.x <= 0)
             transform.position = new Vector3(screenWorldPos.x + 0.05f, screenWorldPos.y);
