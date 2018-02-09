@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿    using UnityEngine;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour
@@ -83,10 +83,21 @@ public class Player : MonoBehaviour
             transform.Translate(new Vector3(axisX, axisY) * Time.deltaTime * speed);
     }
 
+
+
     void OnTriggerEnter2D(Collider2D coll)
     {
         if (coll.gameObject.tag == "Enemy")
             LoseLife();
+    }
+
+    void OnCollisionEnter2D(Collision2D coll)
+    {
+        if (coll.gameObject.tag == "Coin")
+        {
+            Destroy(coll.gameObject);
+            fireRate = 0.3f;
+        }
     }
 
     private void LoseLife()
