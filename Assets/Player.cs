@@ -98,7 +98,13 @@ public class Player : MonoBehaviour
             Destroy(coll.gameObject);
             fireRate = 0.3f;
         }
+        else if (coll.gameObject.tag == "Heart")
+        {
+            Destroy(coll.gameObject);
+            lives++;
+        }
     }
+
 
     private void LoseLife()
     {
