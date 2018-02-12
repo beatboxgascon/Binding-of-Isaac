@@ -7,8 +7,8 @@ public class Player : MonoBehaviour
     private float speed;
     private bool allowFire;
     GameObject tempBullet;
-    float fireRate = 0.5f;
-    float nextFire = 0f;
+    float fireRate;
+    float nextFire;
 
     public GameObject projectilePrefab;
     public Text LivesText;
@@ -20,6 +20,8 @@ public class Player : MonoBehaviour
     {
         lives = 2;
         speed = 4.5f;
+        fireRate = 0.5f;
+        nextFire = 0f;
         LivesText.text = "Lives: " + lives;
         allowFire = true;
         anim = GetComponent<Animator>();
