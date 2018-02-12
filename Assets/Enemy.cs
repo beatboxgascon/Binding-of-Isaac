@@ -4,11 +4,13 @@ using System.Collections;
 public class Enemy : MonoBehaviour
 {
     private float speed;
+    private float health;
 
     // Use this for initialization
     void Start()
     {
-        speed = 1;
+        speed = 1f;
+        health = 10f;
     }
 
     // Update is called once per frame
@@ -20,5 +22,19 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject);
 
         transform.Translate(new Vector3(0, -1) * Time.deltaTime * speed);
+    }
+
+    void OnTriggerEnter2D(Collider2D coll)
+    {
+        if (coll.gameObject.tag == "Projectile")
+        {
+            health -= 2f;
+            if (health<=0)
+            {
+                Destroy(gameObject);
+            }
+            
+            Destroy(coll.gameObject);
+        }
     }
 }

@@ -31,8 +31,6 @@ public class Projectile : MonoBehaviour
             direccionY = 0;
             direccionX = 1;
         }
-
-
     }
 
     // Update is called once per frame
@@ -50,7 +48,6 @@ public class Projectile : MonoBehaviour
         if (coll.gameObject.tag == "Enemy")
         {
             Destroy(gameObject);
-            Destroy(coll.gameObject);
         }
     }
     void OnBecameInvisible()
