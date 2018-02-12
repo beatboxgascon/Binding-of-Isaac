@@ -102,6 +102,7 @@ public class Player : MonoBehaviour
         {
             Destroy(coll.gameObject);
             lives++;
+            LivesText.text = "Lives: " + lives;
         }
     }
 
