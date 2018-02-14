@@ -5,14 +5,16 @@ public class Player : MonoBehaviour
 {
     private int lives;
     private float speed;
-    private bool allowFire;
-    GameObject tempBullet;
-    float fireRate;
-    float nextFire;
+    private float fireRate;
 
+
+    private bool allowFire;
+
+
+    GameObject tempBullet;
+    float nextFire;
     public GameObject projectilePrefab;
     public Text LivesText;
-
     private Animator anim;
 
     // Use this for initialization
