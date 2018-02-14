@@ -135,4 +135,8 @@ public class Player : MonoBehaviour
         }
     }
 
+    public Player getPosition()
+    {
+        return this;
+    }
 }
