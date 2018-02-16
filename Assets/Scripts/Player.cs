@@ -1,4 +1,4 @@
-﻿    using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour
@@ -6,9 +6,12 @@ public class Player : MonoBehaviour
     private int lives;
     private float speed;
     private float fireRate;
+    private float damage;
 
-
+    private float invincibleTime;
     private bool allowFire;
+    private bool invincible;
+
 
 
     GameObject tempBullet;
@@ -20,20 +23,23 @@ public class Player : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        lives = 2;
+        lives = 5;
         speed = 4.5f;
         fireRate = 0.5f;
+        damage = 10f;
         nextFire = 0f;
         LivesText.text = "Lives: " + lives;
         allowFire = true;
+        invincible = false;
+        invincibleTime = 0f;
         anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        float axisX=0;
-        float axisY=0;
+        float axisX = 0;
+        float axisY = 0;
         Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
         Vector3 screenWorldPos = Camera.main.ScreenToWorldPoint(screenPos);
         anim.SetFloat("Movimiento", 0.0f);
@@ -59,7 +65,7 @@ public class Player : MonoBehaviour
             axisX = -0.5f;
             anim.SetFloat("Movimiento", axisX);
         }
-        
+
 
         if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))
         {
@@ -77,7 +83,7 @@ public class Player : MonoBehaviour
 
             fireRocket();
         }
-            
+
 
         if (screenPos.x <= 0)
             transform.position = new Vector3(screenWorldPos.x + 0.05f, screenWorldPos.y);
@@ -91,9 +97,19 @@ public class Player : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.tag == "Enemy")
+        if (coll.gameObject.tag == "Enemy" || coll.gameObject.tag == "EnemyF")
+        {
             LoseLife();
+
+        }
+
     }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        LoseLife();
+    }
+
 
     void OnCollisionEnter2D(Collision2D coll)
     {
@@ -101,6 +117,7 @@ public class Player : MonoBehaviour
         {
             Destroy(coll.gameObject);
             fireRate = 0.3f;
+            damage *= 1.25f;
         }
         else if (coll.gameObject.tag == "Heart")
         {
@@ -110,19 +127,40 @@ public class Player : MonoBehaviour
         }
     }
 
+    public float getDamage()
+    {
+        return damage;
+    }
+
 
     private void LoseLife()
     {
-        lives--;
+
+        if (!invincible)
+        {
+            invincible = true;
+            anim.SetFloat("Inmune", 2);
+            lives--;
+            Invoke("resetInvulnerability", 1.4F);
+        }
+
+
         if (lives <= 0)
         {
-            lives = 2;
+            lives = 5;
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
             for (int i = 0; i < enemies.Length; i++)
                 Destroy(enemies[i]);
+            invincible = false;
         }
 
         LivesText.text = "Lives: " + lives;
+    }
+
+    void resetInvulnerability()
+    {
+        invincible = false;
+        anim.SetFloat("Inmune", 0);
     }
 
     void fireRocket()
