@@ -27,7 +27,7 @@ public class EnemyF : MonoBehaviour
     {
         if (coll.gameObject.tag == "Projectile")
         {
-            health -= jugador.getDamage();
+            health -= jugador.GetDamage();
             if (health <= 0)
             {
                 Destroy(gameObject);

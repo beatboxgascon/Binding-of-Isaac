@@ -17,8 +17,12 @@ public class Player : MonoBehaviour
     GameObject tempBullet;
     float nextFire;
     public GameObject projectilePrefab;
+    public GameObject objetoPrefab;
     public Text LivesText;
+    public Text SpeedText;
+    public Text DamageText;
     private Animator anim;
+    private Coin prueba;
 
     // Use this for initialization
     void Start()
@@ -29,10 +33,13 @@ public class Player : MonoBehaviour
         damage = 10f;
         nextFire = 0f;
         LivesText.text = "Lives: " + lives;
+        SpeedText.text = "Speed: " + speed;
+        DamageText.text = "Damage: " + damage;
         allowFire = true;
         invincible = false;
         invincibleTime = 0f;
         anim = GetComponent<Animator>();
+        prueba = GetComponent<Coin>();
     }
 
     // Update is called once per frame
@@ -98,11 +105,7 @@ public class Player : MonoBehaviour
     void OnTriggerEnter2D(Collider2D coll)
     {
         if (coll.gameObject.tag == "Enemy" || coll.gameObject.tag == "EnemyF")
-        {
             LoseLife();
-
-        }
-
     }
 
     private void OnCollisionStay2D(Collision2D collision)
@@ -116,8 +119,11 @@ public class Player : MonoBehaviour
         if (coll.gameObject.tag == "Coin")
         {
             Destroy(coll.gameObject);
-            fireRate = 0.3f;
-            damage *= 1.25f;
+            /*fireRate = 0.3f;
+            damage *= 1.25f;*/
+            UpdateStats();
+            DamageText.text = "Damage: " + damage;
+            SpeedText.text = "Speed: " + speed;
         }
         else if (coll.gameObject.tag == "Heart")
         {
@@ -127,7 +133,14 @@ public class Player : MonoBehaviour
         }
     }
 
-    public float getDamage()
+    public void UpdateStats()
+    {
+        damage += prueba.GetObjeto().Damage;
+        speed += prueba.GetObjeto().Speed;
+        fireRate += prueba.GetObjeto().FireRate;
+    }
+
+    public float GetDamage()
     {
         return damage;
     }
