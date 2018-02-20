@@ -4,17 +4,16 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
-    public static GameObject[] myObjects;
-    //I used this to keep track of the number of objects I spawned in the scene.
-    // Use this for initialization
+
+    public string spriteName;
+    public Sprite[] spritesObjetos;
+    public int currentSprite;
+
     void Start()
     {
-        myObjects = Resources.LoadAll<GameObject>("Objetos");
-        int whichItem = 0;
-
-
-        GameObject myObj = Instantiate(myObjects[whichItem]) as GameObject;
-        myObj.transform.position = transform.position;
+        currentSprite = Random.Range(0, 5);
+        spritesObjetos = Resources.LoadAll<Sprite>(spriteName);
+        GetComponent<SpriteRenderer>().sprite = spritesObjetos[currentSprite];
     }
 
     // Update is called once per frame
