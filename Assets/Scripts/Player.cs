@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
 
 
 
-    GameObject tempBullet;
+    GameObject trampilla;
     float nextFire;
     public GameObject projectilePrefab;
     public Text LivesText;
@@ -41,6 +41,8 @@ public class Player : MonoBehaviour
         invincible = false;
         invincibleTime = 0f;
         anim = GetComponent<Animator>();
+        trampilla = GameObject.FindGameObjectWithTag("Trampilla");
+        trampilla.SetActive(false);
     }
 
     // Update is called once per frame
@@ -99,6 +101,12 @@ public class Player : MonoBehaviour
             transform.position = new Vector3(screenWorldPos.x - 0.05f, screenWorldPos.y);
         else
             transform.Translate(new Vector3(axisX, axisY) * Time.deltaTime * speed);
+
+        if (GameObject.FindGameObjectsWithTag("EnemyF").Length<1)
+        {
+            trampilla.SetActive(true);
+        }
+
     }
 
 
@@ -111,7 +119,8 @@ public class Player : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        LoseLife();
+        if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "EnemyF")
+            LoseLife();
     }
 
 
