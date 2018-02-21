@@ -15,7 +15,9 @@ public class Trampilla : MonoBehaviour {
     {
         if (GameObject.FindGameObjectsWithTag("EnemyF").Length==0)
         {
-            //SceneManager.LoadScene(2);
+            Scene sceneToLoad = SceneManager.GetSceneByBuildIndex(2);
+            SceneManager.LoadScene(sceneToLoad.name, LoadSceneMode.Additive);
+            SceneManager.MoveGameObjectToScene(gameObject, sceneToLoad);
             prueba.SetActive(true);
         }
     }
