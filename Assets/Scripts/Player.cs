@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour
@@ -159,11 +160,15 @@ public class Player : MonoBehaviour
 
         if (lives <= 0)
         {
+            
+                SceneManager.LoadScene(0);
+            
+            /*
             lives = 5;
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
             for (int i = 0; i < enemies.Length; i++)
                 Destroy(enemies[i]);
-            invincible = false;
+            invincible = false;*/
         }
 
         LivesText.text = "Lives: " + lives;
