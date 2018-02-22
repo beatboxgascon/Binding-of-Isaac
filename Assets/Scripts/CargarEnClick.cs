@@ -8,6 +8,7 @@ public class CargarEnClick : MonoBehaviour
 
     public void CargarPorIndice(int indice)
     {
+        
         SceneManager.LoadScene(indice);
     }
 

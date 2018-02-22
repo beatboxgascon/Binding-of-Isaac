@@ -4,10 +4,10 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    private int lives;
-    private float speed;
-    private float fireRate;
-    private float damage;
+    public static int lives = 5;
+    public static float speed = 4.5f;
+    public static float fireRate = 0.5f;
+    public static float damage = 10f;
 
     private float invincibleTime;
     private bool allowFire;
@@ -28,10 +28,7 @@ public class Player : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        lives = 5;
-        speed = 4.5f;
-        fireRate = 0.5f;
-        damage = 10f;
+        
         nextFire = 0f;
         LivesText.text = "Lives: " + lives;
         SpeedText.text = "Speed: " + speed;
@@ -139,6 +136,12 @@ public class Player : MonoBehaviour
             Destroy(coll.gameObject);
             lives++;
             LivesText.text = "Lives: " + lives;
+        }
+        else if (coll.gameObject.tag == "Trampilla")
+        {
+            SceneManager.LoadScene(2);
+            
+            
         }
     }
 
