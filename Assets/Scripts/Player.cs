@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     public static float speed = 4.5f;
     public static float fireRate = 0.5f;
     public static float damage = 10f;
+    private int escena=1;
 
     private float invincibleTime;
     private bool allowFire;
@@ -24,11 +25,12 @@ public class Player : MonoBehaviour
     public Text FireRateText;
     private Animator anim;
     private Coin prueba;
+    
 
     // Use this for initialization
     void Start()
     {
-        
+        escena = SceneManager.GetActiveScene().buildIndex;
         nextFire = 0f;
         LivesText.text = "Lives: " + lives;
         SpeedText.text = "Speed: " + speed;
@@ -101,16 +103,19 @@ public class Player : MonoBehaviour
 
         if (GameObject.FindGameObjectsWithTag("EnemyF").Length<1)
         {
-            trampilla.SetActive(true);
+            if (GameObject.FindGameObjectWithTag("Trampilla"))
+            {
+                trampilla.SetActive(true);
+            }
+            
         }
 
     }
 
 
-
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.tag == "Enemy" || coll.gameObject.tag == "EnemyF")
+        if (coll.gameObject.tag == "enemyProjectile" || coll.gameObject.tag == "EnemyF")
             LoseLife();
     }
 
@@ -139,9 +144,8 @@ public class Player : MonoBehaviour
         }
         else if (coll.gameObject.tag == "Trampilla")
         {
-            SceneManager.LoadScene(2);
-            
-            
+            escena++;
+            SceneManager.LoadScene(escena);   
         }
     }
 
@@ -172,15 +176,7 @@ public class Player : MonoBehaviour
 
         if (lives <= 0)
         {
-            
-                SceneManager.LoadScene(0);
-            
-            /*
-            lives = 5;
-            GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-            for (int i = 0; i < enemies.Length; i++)
-                Destroy(enemies[i]);
-            invincible = false;*/
+            SceneManager.LoadScene(0);
         }
 
         LivesText.text = "Lives: " + lives;
