@@ -115,13 +115,15 @@ public class Player : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.tag == "enemyProjectile" || coll.gameObject.tag == "EnemyF")
+        if (coll.gameObject.tag == "enemyProjectile" || coll.gameObject.tag == "EnemyF" ||
+            coll.gameObject.tag == "EnemyF_Projectile")
             LoseLife();
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "EnemyF")
+        if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "EnemyF" ||
+            collision.gameObject.tag == "EnemyF_Projectile")
             LoseLife();
     }
 
