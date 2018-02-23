@@ -20,20 +20,24 @@ public class EnemyF_Projectile : MonoBehaviour
         health = 30f;
         nextFire = 0f;
         jugador = target.GetComponent<Player>();
+        rigid.gravityScale = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
         Congelar();
-        transform.position += (target.transform.position - transform.position).normalized * speed * Time.deltaTime;
-
+        
         fireRocket();
     }
 
-    private void Congelar()
+    private IEnumerator Congelar()
     {
-       
+        rigid.constraints = RigidbodyConstraints2D.FreezeAll;
+        yield return new WaitForSeconds(2);
+        rigid.constraints = RigidbodyConstraints2D.None;
+        transform.position += (target.transform.position - transform.position).normalized * speed * Time.deltaTime;
+
     }
     void OnTriggerEnter2D(Collider2D coll)
     {
