@@ -9,9 +9,19 @@ public class Boss : MonoBehaviour {
     //private Rigidbody2D rigid;
     private float speed;
     private float nextFire;
+    private float nextRoar;
     public GameObject projectilePrefab;
     private float health;
     public Text healthText;
+
+    private AudioSource source;
+    public AudioClip shoot;
+    public AudioClip roar;
+
+    void Awake()
+    {
+        source = GetComponent<AudioSource>();
+    }
     // Use this for initialization
     void Start () {
         
@@ -19,6 +29,7 @@ public class Boss : MonoBehaviour {
         health = 500f;
         healthText.text = "Enemy Health: " + health;
         nextFire = 0f;
+        nextRoar = 0f;
         jugador = target.GetComponent<Player>();
     }
 	
@@ -26,6 +37,12 @@ public class Boss : MonoBehaviour {
 	void Update () {
         transform.position += (target.transform.position - transform.position).normalized * speed * Time.deltaTime;
 
+        if (Time.time >nextRoar)
+        {
+            nextRoar = Time.time + 4f;
+            source.PlayOneShot(roar, 5f);
+        }
+        
         fireRocket();
     }
 
@@ -33,6 +50,7 @@ public class Boss : MonoBehaviour {
     {
         if (coll.gameObject.tag == "Projectile")
         {
+            
             health -= jugador.GetDamage();
             healthText.text = "Enemy Health: " + health;
             if (health <= 0)
@@ -48,7 +66,9 @@ public class Boss : MonoBehaviour {
     {
         if (Time.time > nextFire)
         {
-            nextFire = Time.time + 1f;
+            source.PlayOneShot(shoot, 5f);
+
+            nextFire = Time.time + 1.5f;
             Vector3 p1 = transform.position;
             Vector3 p2 = target.transform.position;
             float angle = Mathf.Atan2(p2.y - p1.y, p2.x - p1.x) * 180 / Mathf.PI;

@@ -56,6 +56,7 @@ public class Player : MonoBehaviour
         
     }
 
+
     // Update is called once per frame
     void Update()
     {
@@ -140,6 +141,11 @@ public class Player : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
+        if (collision.gameObject.tag == "Trophy")
+        {
+            escena++;
+            SceneManager.LoadScene(escena);
+        }
         if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "EnemyF" ||
             collision.gameObject.tag == "EnemyF_Projectile")
             LoseLife();

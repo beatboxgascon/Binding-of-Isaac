@@ -11,8 +11,13 @@ public class EnemigoP : MonoBehaviour {
     private Player jugador;
     float nextFire;
 
+    private AudioSource source;
+    public AudioClip shoot;
 
-
+    void Awake()
+    {
+        source = GetComponent<AudioSource>();
+    }
     void Start()
     {
         nextFire = 0f;
@@ -43,6 +48,7 @@ public class EnemigoP : MonoBehaviour {
     {
         if (Time.time > nextFire)
         {
+            source.PlayOneShot(shoot, 5f);
             nextFire = Time.time + 1f;
             if (transform.rotation.y!=0)
             {

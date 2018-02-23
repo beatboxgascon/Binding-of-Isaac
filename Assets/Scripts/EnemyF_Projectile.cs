@@ -11,7 +11,16 @@ public class EnemyF_Projectile : MonoBehaviour
     private float nextFire;
     public GameObject projectilePrefab;
     private float health;
+
+    private AudioSource source;
+    public AudioClip shoot;
     // Use this for initialization
+
+    void Awake()
+    {
+        source = GetComponent<AudioSource>();
+    }
+
     void Start()
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -58,7 +67,7 @@ public class EnemyF_Projectile : MonoBehaviour
         if (Time.time > nextFire)
         {
             nextFire = Time.time + 1.5f;
-
+            source.PlayOneShot(shoot, 5f);
             Instantiate(projectilePrefab, transform.position, Quaternion.Euler(0, 0, 90));
             Instantiate(projectilePrefab, transform.position, Quaternion.Euler(0, 0, 270));
             Instantiate(projectilePrefab, transform.position, Quaternion.Euler(0, 0, 180));
