@@ -40,6 +40,11 @@ public class Player : MonoBehaviour
         invincible = false;
         invincibleTime = 0f;
         anim = GetComponent<Animator>();
+        trampilla = GameObject.FindGameObjectWithTag("Trampilla");
+        if (trampilla)
+        {
+            trampilla.SetActive(false);
+        }
         
     }
 
@@ -100,7 +105,7 @@ public class Player : MonoBehaviour
         else
             transform.Translate(new Vector3(axisX, axisY) * Time.deltaTime * speed);
 
-        if (GameObject.FindGameObjectsWithTag("EnemyF").Length<1)
+        if (OpenTrapdoor())
         {
             if (trampilla)
             {
@@ -125,6 +130,12 @@ public class Player : MonoBehaviour
             collision.gameObject.tag == "EnemyF_Projectile")
             LoseLife();
     }
+
+    public bool OpenTrapdoor()
+    {
+        return ((GameObject.FindGameObjectsWithTag("EnemyF").Length < 1) &&
+            (GameObject.FindGameObjectsWithTag("EnemyF_Projectile").Length < 1));
+    } 
 
 
     void OnCollisionEnter2D(Collision2D coll)
