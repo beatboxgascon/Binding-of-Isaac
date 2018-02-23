@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
 
 
 
-    GameObject trampilla;
+    public GameObject trampilla;
     float nextFire;
     public GameObject projectilePrefab;
     public Text LivesText;
@@ -40,8 +40,7 @@ public class Player : MonoBehaviour
         invincible = false;
         invincibleTime = 0f;
         anim = GetComponent<Animator>();
-        trampilla = GameObject.FindGameObjectWithTag("Trampilla");
-        trampilla.SetActive(false);
+        
     }
 
     // Update is called once per frame
@@ -103,7 +102,7 @@ public class Player : MonoBehaviour
 
         if (GameObject.FindGameObjectsWithTag("EnemyF").Length<1)
         {
-            if (GameObject.FindGameObjectWithTag("Trampilla"))
+            if (trampilla)
             {
                 trampilla.SetActive(true);
             }

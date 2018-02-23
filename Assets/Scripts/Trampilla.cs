@@ -13,13 +13,7 @@ public class Trampilla : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (GameObject.FindGameObjectsWithTag("EnemyF").Length==0)
-        {
-            Scene sceneToLoad = SceneManager.GetSceneByBuildIndex(2);
-            SceneManager.LoadScene(sceneToLoad.name, LoadSceneMode.Single);
-            SceneManager.MoveGameObjectToScene(gameObject, sceneToLoad);
-            prueba.SetActive(true);
-        }
+        
     }
 
 }
