@@ -25,7 +25,15 @@ public class Player : MonoBehaviour
     public Text FireRateText;
     private Animator anim;
     private Coin prueba;
-    
+
+    private AudioSource source;
+    public AudioClip shoot;
+    public AudioClip hitSound;
+
+    void Awake()
+    {
+        source = GetComponent<AudioSource>();
+    }
 
     // Use this for initialization
     void Start()
@@ -188,7 +196,9 @@ public class Player : MonoBehaviour
             invincible = true;
             anim.SetFloat("Inmune", 2);
             lives--;
+            source.PlayOneShot(hitSound, 5f);
             Invoke("resetInvulnerability", 1.4F);
+
         }
 
 
@@ -213,6 +223,8 @@ public class Player : MonoBehaviour
             nextFire = Time.time + fireRate;
 
             Instantiate(projectilePrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+            source.PlayOneShot(shoot, 5f);
+
         }
     }
 
