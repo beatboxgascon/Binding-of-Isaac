@@ -19,6 +19,7 @@ public class EnemyF_Projectile : MonoBehaviour
         speed = 1f;
         health = 30f;
         nextFire = 0f;
+        jugador = target.GetComponent<Player>();
     }
 
     // Update is called once per frame
@@ -26,12 +27,13 @@ public class EnemyF_Projectile : MonoBehaviour
     {
         Congelar();
         transform.position += (target.transform.position - transform.position).normalized * speed * Time.deltaTime;
+
         fireRocket();
     }
 
     private void Congelar()
     {
-
+       
     }
     void OnTriggerEnter2D(Collider2D coll)
     {
