@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyProjectile : MonoBehaviour {
+public class EnemyProjectile : MonoBehaviour
+{
 
     private float speed;
     private float direccionY;
@@ -12,7 +13,7 @@ public class EnemyProjectile : MonoBehaviour {
     void Start()
     {
         speed = 3;
-        
+
     }
 
     // Update is called once per frame
@@ -27,7 +28,7 @@ public class EnemyProjectile : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.tag=="Player")
+        if (coll.gameObject.tag == "Player")
         {
             Destroy(gameObject);
         }
