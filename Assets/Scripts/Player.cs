@@ -122,6 +122,12 @@ public class Player : MonoBehaviour
         if (coll.gameObject.tag == "enemyProjectile" || coll.gameObject.tag == "EnemyF" ||
             coll.gameObject.tag == "EnemyF_Projectile")
             LoseLife();
+
+        if (coll.gameObject.tag=="Trophy")
+        {
+            escena++;
+            SceneManager.LoadScene(escena);
+        }
     }
 
     private void OnCollisionStay2D(Collision2D collision)
@@ -188,7 +194,7 @@ public class Player : MonoBehaviour
 
         if (lives <= 0)
         {
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(6);
         }
 
         LivesText.text = "Lives: " + lives;

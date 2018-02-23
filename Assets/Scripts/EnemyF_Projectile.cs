@@ -10,7 +10,6 @@ public class EnemyF_Projectile : MonoBehaviour
     private float speed;
     private float nextFire;
     public GameObject projectilePrefab;
-
     private float health;
     // Use this for initialization
     void Start()
@@ -26,7 +25,8 @@ public class EnemyF_Projectile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Congelar();
+        transform.position += (target.transform.position - transform.position).normalized * speed * Time.deltaTime;
+        //Congelar();
         
         fireRocket();
     }

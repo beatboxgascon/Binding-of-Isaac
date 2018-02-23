@@ -44,8 +44,15 @@ public class EnemigoP : MonoBehaviour {
         if (Time.time > nextFire)
         {
             nextFire = Time.time + 1f;
-
-            Instantiate(projectilePrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+            if (transform.rotation.y!=0)
+            {
+                Instantiate(projectilePrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, 180)));
+            }
+            else
+            {
+                Instantiate(projectilePrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+            }
+            
         }
     }
 }
