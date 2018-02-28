@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     public static float speed = 4.5f;
     public static float fireRate = 0.5f;
     public static float damage = 10f;
-    private int escena=1;
+    private int escena = 1;
 
     private float invincibleTime;
     private bool allowFire;
@@ -43,7 +43,7 @@ public class Player : MonoBehaviour
         LivesText.text = "Lives: " + lives;
         SpeedText.text = "Speed: " + speed;
         DamageText.text = "Damage: " + damage;
-        FireRateText.text = "Fire Rate: " + fireRate*10;
+        FireRateText.text = "Fire Rate: " + fireRate * 10;
         allowFire = true;
         invincible = false;
         invincibleTime = 0f;
@@ -53,7 +53,7 @@ public class Player : MonoBehaviour
         {
             trampilla.SetActive(false);
         }
-        
+
     }
 
 
@@ -120,7 +120,7 @@ public class Player : MonoBehaviour
             {
                 trampilla.SetActive(true);
             }
-            
+
         }
 
     }
@@ -132,7 +132,7 @@ public class Player : MonoBehaviour
             coll.gameObject.tag == "EnemyF_Projectile")
             LoseLife();
 
-        if (coll.gameObject.tag=="Trophy")
+        if (coll.gameObject.tag == "Trophy")
         {
             escena++;
             SceneManager.LoadScene(escena);
@@ -155,7 +155,7 @@ public class Player : MonoBehaviour
     {
         return ((GameObject.FindGameObjectsWithTag("EnemyF").Length < 1) &&
             (GameObject.FindGameObjectsWithTag("EnemyF_Projectile").Length < 1));
-    } 
+    }
 
 
     void OnCollisionEnter2D(Collision2D coll)
@@ -177,7 +177,7 @@ public class Player : MonoBehaviour
         else if (coll.gameObject.tag == "Trampilla")
         {
             escena++;
-            SceneManager.LoadScene(escena);   
+            SceneManager.LoadScene(escena);
         }
     }
 
@@ -185,7 +185,7 @@ public class Player : MonoBehaviour
     {
         damage += c.GetObjeto().Damage;
         speed += c.GetObjeto().Speed;
-        fireRate -= c.GetObjeto().FireRate*0.1f;
+        fireRate -= c.GetObjeto().FireRate * 0.1f;
     }
 
     public float GetDamage()

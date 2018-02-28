@@ -2,35 +2,38 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EsconderObjetos : MonoBehaviour {
+public class EsconderObjetos : MonoBehaviour
+{
 
     public List<GameObject> objetos;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         foreach (var item in objetos)
         {
-            if (item!=null)
+            if (item != null)
             {
                 item.SetActive(false);
             }
-            
+
         }
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
         if (AreEnemiesLeft())
         {
             foreach (var item in objetos)
             {
-                if (item!=null)
+                if (item != null)
                 {
                     item.SetActive(true);
-                } 
+                }
             }
         }
-	}
+    }
 
     public bool AreEnemiesLeft()
     {

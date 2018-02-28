@@ -31,7 +31,7 @@ public class EnemyF : MonoBehaviour
     void Update()
     {
         transform.position += (target.transform.position - transform.position).normalized * speed * Time.deltaTime;
-        
+
     }
 
     void OnTriggerEnter2D(Collider2D coll)

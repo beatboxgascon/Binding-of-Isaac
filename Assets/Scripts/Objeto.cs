@@ -23,14 +23,14 @@ namespace Assets.Scripts
             do
             {
                 linea = inpit.ReadLine();
-                if (linea!=null && i==posicion)
+                if (linea != null && i == posicion)
                 {
                     string[] stats = linea.Split(';');
                     Speed = Convert.ToSingle(stats[0]);
                     FireRate = Convert.ToSingle(stats[1]);
                     Damage = Convert.ToSingle(stats[2]);
                 }
-            } while (linea!=null);
+            } while (linea != null);
 
             inpit.Close();
         }

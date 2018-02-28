@@ -36,7 +36,7 @@ public class EnemyF_Projectile : MonoBehaviour
     {
         transform.position += (target.transform.position - transform.position).normalized * speed * Time.deltaTime;
         //Congelar();
-        
+
         fireRocket();
     }
 

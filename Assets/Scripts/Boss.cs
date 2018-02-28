@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Boss : MonoBehaviour {
+public class Boss : MonoBehaviour
+{
     private Player jugador;
     public Transform target;
     //private Rigidbody2D rigid;
@@ -23,8 +24,9 @@ public class Boss : MonoBehaviour {
         source = GetComponent<AudioSource>();
     }
     // Use this for initialization
-    void Start () {
-        
+    void Start()
+    {
+
         speed = 1.5f;
         health = 500f;
         healthText.text = "Enemy Health: " + health;
@@ -32,17 +34,18 @@ public class Boss : MonoBehaviour {
         nextRoar = 0f;
         jugador = target.GetComponent<Player>();
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
         transform.position += (target.transform.position - transform.position).normalized * speed * Time.deltaTime;
 
-        if (Time.time >nextRoar)
+        if (Time.time > nextRoar)
         {
             nextRoar = Time.time + 4f;
             source.PlayOneShot(roar, 5f);
         }
-        
+
         fireRocket();
     }
 
@@ -50,7 +53,7 @@ public class Boss : MonoBehaviour {
     {
         if (coll.gameObject.tag == "Projectile")
         {
-            
+
             health -= jugador.GetDamage();
             healthText.text = "Enemy Health: " + health;
             if (health <= 0)
@@ -72,9 +75,9 @@ public class Boss : MonoBehaviour {
             Vector3 p1 = transform.position;
             Vector3 p2 = target.transform.position;
             float angle = Mathf.Atan2(p2.y - p1.y, p2.x - p1.x) * 180 / Mathf.PI;
-            Instantiate(projectilePrefab, transform.position,Quaternion.Euler(0,0, angle));
-            Instantiate(projectilePrefab, transform.position, Quaternion.Euler(0, 0, angle+45));
-            Instantiate(projectilePrefab, transform.position, Quaternion.Euler(0, 0, angle-45));
+            Instantiate(projectilePrefab, transform.position, Quaternion.Euler(0, 0, angle));
+            Instantiate(projectilePrefab, transform.position, Quaternion.Euler(0, 0, angle + 45));
+            Instantiate(projectilePrefab, transform.position, Quaternion.Euler(0, 0, angle - 45));
 
 
         }

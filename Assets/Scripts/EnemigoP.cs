@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemigoP : MonoBehaviour {
+public class EnemigoP : MonoBehaviour
+{
 
 
     public Transform target;//set target from inspector instead of looking in Update
@@ -26,7 +27,7 @@ public class EnemigoP : MonoBehaviour {
     }
 
     void Update()
-    { 
+    {
         fireRocket();
     }
 
@@ -50,7 +51,7 @@ public class EnemigoP : MonoBehaviour {
         {
             source.PlayOneShot(shoot, 5f);
             nextFire = Time.time + 1f;
-            if (transform.rotation.y!=0)
+            if (transform.rotation.y != 0)
             {
                 Instantiate(projectilePrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, 180)));
             }
@@ -58,7 +59,7 @@ public class EnemigoP : MonoBehaviour {
             {
                 Instantiate(projectilePrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
             }
-            
+
         }
     }
 }

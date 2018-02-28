@@ -8,7 +8,7 @@ public class CargarEnClick : MonoBehaviour
 
     public void CargarPorIndice(int indice)
     {
-        if (indice == 0)
+        if (indice == 1)
         {
             Player.lives = 5;
             Player.speed = 4.5f;

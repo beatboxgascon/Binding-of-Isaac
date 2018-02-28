@@ -29,11 +29,11 @@ public class Enemy : MonoBehaviour
         if (coll.gameObject.tag == "Projectile")
         {
             health -= 2f;
-            if (health<=0)
+            if (health <= 0)
             {
                 Destroy(gameObject);
             }
-            
+
             Destroy(coll.gameObject);
         }
     }

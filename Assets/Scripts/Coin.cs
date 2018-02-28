@@ -28,7 +28,7 @@ public class Coin : MonoBehaviour
 
     public Objeto GetObjeto() { return objeto; }
 
-  
 
-   
+
+
 }
