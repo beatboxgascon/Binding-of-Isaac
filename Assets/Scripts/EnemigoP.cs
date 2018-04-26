@@ -1,11 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnemigoP : MonoBehaviour
 {
-
-
     public Transform target;//set target from inspector instead of looking in Update
     public GameObject projectilePrefab;
     private float health;
