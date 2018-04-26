@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     public static float speed = 4.5f;
     public static float fireRate = 0.5f;
     public static float damage = 10f;
+    public string tipoProyectil;
     private int escena = 1;
 
     private float invincibleTime;
@@ -19,6 +20,7 @@ public class Player : MonoBehaviour
     public GameObject trampilla;
     float nextFire;
     public GameObject projectilePrefab;
+    public GameObject laserPrefab;
     public Text LivesText;
     public Text SpeedText;
     public Text DamageText;
@@ -40,6 +42,7 @@ public class Player : MonoBehaviour
     {
         escena = SceneManager.GetActiveScene().buildIndex;
         nextFire = 0f;
+        tipoProyectil = "lagrima";
         LivesText.text = "Lives: " + lives;
         SpeedText.text = "Speed: " + speed;
         DamageText.text = "Damage: " + damage;
@@ -103,7 +106,15 @@ public class Player : MonoBehaviour
             if (Input.GetKey(KeyCode.DownArrow))
                 anim.SetFloat("MovimientoY", -0.5f);
 
-            fireRocket();
+            if(tipoProyectil == "lagrima")
+            {
+                fireRocket();
+            }
+            else
+            {
+                fireLaser();
+            }
+            
         }
 
 
@@ -223,6 +234,17 @@ public class Player : MonoBehaviour
     }
 
     void fireRocket()
+    {
+        if (Time.time > nextFire)
+        {
+            nextFire = Time.time + fireRate;
+
+            Instantiate(projectilePrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+            source.PlayOneShot(shoot, 5f);
+
+        }
+    }
+    void fireLaser()
     {
         if (Time.time > nextFire)
         {
