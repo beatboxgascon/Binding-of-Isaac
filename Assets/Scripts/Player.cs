@@ -20,7 +20,8 @@ public class Player : MonoBehaviour
     public GameObject trampilla;
     float nextFire;
     public GameObject projectilePrefab;
-    public GameObject laserPrefab;
+    public GameObject laserPrefabV;
+    public GameObject laserPrefabH;
     public Text LivesText;
     public Text SpeedText;
     public Text DamageText;
@@ -106,17 +107,17 @@ public class Player : MonoBehaviour
             if (Input.GetKey(KeyCode.DownArrow))
                 anim.SetFloat("MovimientoY", -0.5f);
 
-            if(tipoProyectil == "laser")
+            if (tipoProyectil == "laser")
             {
                 fireLaser();
-                
+
 
             }
             else
             {
                 fireRocket();
             }
-            
+
         }
 
 
@@ -250,9 +251,18 @@ public class Player : MonoBehaviour
         if (Time.time > nextFire)
         {
             nextFire = Time.time + fireRate / 4;
+          if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow))
+            {
+                Instantiate(laserPrefabV, transform.position, laserPrefabV.transform.rotation);
+                source.PlayOneShot(shoot, 5f);
+            }
+            else
+            {
+                Instantiate(laserPrefabH, transform.position, laserPrefabH.transform.rotation);
+                source.PlayOneShot(shoot, 5f);
+            }
 
-            Instantiate(laserPrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
-            source.PlayOneShot(shoot, 5f);
+
 
         }
     }
