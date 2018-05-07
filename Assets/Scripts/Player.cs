@@ -42,7 +42,7 @@ public class Player : MonoBehaviour
     {
         escena = SceneManager.GetActiveScene().buildIndex;
         nextFire = 0f;
-        tipoProyectil = "lagrima";
+        tipoProyectil = "laser";
         LivesText.text = "Lives: " + lives;
         SpeedText.text = "Speed: " + speed;
         DamageText.text = "Damage: " + damage;
@@ -106,13 +106,15 @@ public class Player : MonoBehaviour
             if (Input.GetKey(KeyCode.DownArrow))
                 anim.SetFloat("MovimientoY", -0.5f);
 
-            if(tipoProyectil == "lagrima")
+            if(tipoProyectil == "laser")
             {
-                fireRocket();
+                fireLaser();
+                
+
             }
             else
             {
-                fireLaser();
+                fireRocket();
             }
             
         }
@@ -238,7 +240,6 @@ public class Player : MonoBehaviour
         if (Time.time > nextFire)
         {
             nextFire = Time.time + fireRate;
-
             Instantiate(projectilePrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
             source.PlayOneShot(shoot, 5f);
 
@@ -248,9 +249,9 @@ public class Player : MonoBehaviour
     {
         if (Time.time > nextFire)
         {
-            nextFire = Time.time + fireRate;
+            nextFire = Time.time + fireRate / 800;
 
-            Instantiate(projectilePrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+            Instantiate(laserPrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
             source.PlayOneShot(shoot, 5f);
 
         }
