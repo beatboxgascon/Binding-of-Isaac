@@ -249,7 +249,7 @@ public class Player : MonoBehaviour
     {
         if (Time.time > nextFire)
         {
-            nextFire = Time.time + fireRate / 800;
+            nextFire = Time.time + fireRate / 4;
 
             Instantiate(laserPrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
             source.PlayOneShot(shoot, 5f);
