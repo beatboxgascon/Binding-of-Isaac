@@ -251,14 +251,31 @@ public class Player : MonoBehaviour
         if (Time.time > nextFire)
         {
             nextFire = Time.time + fireRate / 4;
-          if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow))
+
+            //COMO COÑO RECOJO EL INPUT PARA PASARLO A UN SWITCH ?
+            if (Input.GetKey(KeyCode.UpArrow))
             {
-                Instantiate(laserPrefabV, transform.position, laserPrefabV.transform.rotation);
+                Instantiate(laserPrefabV, new Vector3(transform.position.x, transform.position.y + 0.6f, transform.position.z)
+                    , laserPrefabV.transform.rotation);
                 source.PlayOneShot(shoot, 5f);
             }
-            else
+            else if (Input.GetKey(KeyCode.DownArrow))
             {
-                Instantiate(laserPrefabH, transform.position, laserPrefabH.transform.rotation);
+                Instantiate(laserPrefabV, new Vector3(transform.position.x, transform.position.y - 0.6f, transform.position.z)
+                    , laserPrefabV.transform.rotation);
+                source.PlayOneShot(shoot, 5f);
+            }
+            else if (Input.GetKey(KeyCode.LeftArrow))
+            {
+
+                Instantiate(laserPrefabH, new Vector3(transform.position.x - 0.6f, transform.position.y, transform.position.z), laserPrefabH.transform.rotation);
+                source.PlayOneShot(shoot, 5f);
+            }
+
+            else if (Input.GetKey(KeyCode.RightArrow))
+            {
+
+                Instantiate(laserPrefabH, new Vector3(transform.position.x + 0.6f, transform.position.y, transform.position.z), laserPrefabH.transform.rotation);
                 source.PlayOneShot(shoot, 5f);
             }
 
