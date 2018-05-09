@@ -3,20 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Boss : MonoBehaviour
+public class Boss : EnemigoDisparo
 {
-    private Player jugador;
     public Transform target;
     //private Rigidbody2D rigid;
-    private float speed;
-    private float nextFire;
     private float nextRoar;
     public GameObject projectilePrefab;
-    private float health;
     public Text healthText;
-
-    private AudioSource source;
-    public AudioClip shoot;
+    
     public AudioClip roar;
 
     void Awake()
@@ -32,7 +26,7 @@ public class Boss : MonoBehaviour
         healthText.text = "Enemy Health: " + health;
         nextFire = 0f;
         nextRoar = 0f;
-        jugador = target.GetComponent<Player>();
+        jugador = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
     // Update is called once per frame

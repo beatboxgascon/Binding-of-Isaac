@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyF_Projectile : MonoBehaviour
+public class EnemyF_Projectile : EnemigoDisparo
 {
     private Player jugador;
     public Transform target;
@@ -27,7 +27,7 @@ public class EnemyF_Projectile : MonoBehaviour
         speed = 1f;
         health = 30f;
         nextFire = 0f;
-        jugador = target.GetComponent<Player>();
+        jugador = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         rigid.gravityScale = 0;
     }
 
@@ -39,7 +39,7 @@ public class EnemyF_Projectile : MonoBehaviour
 
         fireRocket();
     }
-
+    //Me temo que esto no se llega a usar o no funciona como se esperaba.
     private IEnumerator Congelar()
     {
         rigid.constraints = RigidbodyConstraints2D.FreezeAll;

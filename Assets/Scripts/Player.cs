@@ -36,6 +36,7 @@ public class Player : MonoBehaviour
     void Awake()
     {
         source = GetComponent<AudioSource>();
+        
     }
 
     // Use this for initialization
