@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     //0.2f como limite para el firerate.
     public static int lives = 5;
     public static float speed = 5f;
-    public static float fireRate = 0.2f;
+    public static float fireRate = 0.7f;
     public static float damage = 10f;
     public string tipoProyectil;
     private int escena = 1;
