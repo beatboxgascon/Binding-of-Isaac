@@ -14,10 +14,7 @@ public class EnemigoP : EnemigoDisparo
     {
         nextFire = 0f;
         health = 20f;
-<<<<<<< HEAD
-        
-=======
->>>>>>> master
+
         jugador = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 

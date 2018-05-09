@@ -4,9 +4,11 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    //8f como maximo para la velocidad.
+    //0.2f como limite para el firerate.
     public static int lives = 5;
-    public static float speed = 4.5f;
-    public static float fireRate = 0.5f;
+    public static float speed = 5f;
+    public static float fireRate = 0.2f;
     public static float damage = 10f;
     public string tipoProyectil;
     private int escena = 1;
@@ -41,9 +43,10 @@ public class Player : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        Screen.SetResolution(1920, 1080, true);
         escena = SceneManager.GetActiveScene().buildIndex;
         nextFire = 0f;
-        tipoProyectil = "laser";
+        tipoProyectil = "lagrima";
         LivesText.text = "Lives: " + lives;
         SpeedText.text = "Speed: " + speed;
         DamageText.text = "Damage: " + damage;
@@ -109,16 +112,11 @@ public class Player : MonoBehaviour
                 anim.SetFloat("MovimientoY", 0.5f);
             if (Input.GetKey(KeyCode.DownArrow))
                 anim.SetFloat("MovimientoY", -0.5f);
+            
 
-<<<<<<< HEAD
-            if (tipoProyectil == "lagrima")
-=======
             if (tipoProyectil == "laser")
->>>>>>> master
             {
                 fireLaser();
-
-
             }
             else
             {

@@ -60,6 +60,12 @@ public class Room : MonoBehaviour {
         {
             setEnemiesState(true);
         }
+
+        //if (player.CompareTag("Projectile"))
+        //{
+        //    Destroy(player.gameObject);
+        //    player.transform.position.x
+        //}
     }
 
 
