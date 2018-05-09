@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemyF : MonoBehaviour
+public class EnemyF : Enemigo
 {
     private float speed;
 
@@ -22,9 +22,13 @@ public class EnemyF : MonoBehaviour
     {
         speed = 1f;
         health = 20f;
+<<<<<<< HEAD
         jugador = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+=======
+>>>>>>> master
         //source.PlayOneShot(buzz, 5f);
         source.Play(0);
+        jugador = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
     void Update()

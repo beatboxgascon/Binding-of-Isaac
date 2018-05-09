@@ -1,16 +1,10 @@
 ﻿using UnityEngine;
 
-public class AnotherBoss : MonoBehaviour
+public class AnotherBoss : EnemigoDisparo
 {
     public Transform target;//set target from inspector instead of looking in Update
     public GameObject projectilePrefab;
-    private float health;
-    private Player jugador;
-    float nextFire;
     int angle1, angle2, angle3;
-
-    private AudioSource source;
-    public AudioClip shoot;
 
     void Awake()
     {
@@ -20,7 +14,7 @@ public class AnotherBoss : MonoBehaviour
     {
         nextFire = 0f;
         health = 40f;
-        jugador = target.GetComponent<Player>();
+        jugador = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         /*
          * --Version con 2 proyectiles de misma direccion pero sentido opuesto.
          * 

@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Enemigo
 {
-    private float speed;
-    private float health;
 
     // Use this for initialization
     void Start()

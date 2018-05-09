@@ -18,7 +18,8 @@ public class Player : MonoBehaviour
     public GameObject trampilla;
     float nextFire;
     public GameObject projectilePrefab;
-    public GameObject laserPrefab;
+    public GameObject laserPrefabV;
+    public GameObject laserPrefabH;
     public Text LivesText;
     public Text SpeedText;
     public Text DamageText;
@@ -34,6 +35,7 @@ public class Player : MonoBehaviour
     void Awake()
     {
         source = GetComponent<AudioSource>();
+
     }
 
     // Use this for initialization
@@ -41,7 +43,7 @@ public class Player : MonoBehaviour
     {
         escena = SceneManager.GetActiveScene().buildIndex;
         nextFire = 0f;
-        tipoProyectil = "lagrima";
+        tipoProyectil = "laser";
         LivesText.text = "Lives: " + lives;
         SpeedText.text = "Speed: " + speed;
         DamageText.text = "Damage: " + damage;
@@ -108,13 +110,19 @@ public class Player : MonoBehaviour
             if (Input.GetKey(KeyCode.DownArrow))
                 anim.SetFloat("MovimientoY", -0.5f);
 
+<<<<<<< HEAD
             if (tipoProyectil == "lagrima")
+=======
+            if (tipoProyectil == "laser")
+>>>>>>> master
             {
-                fireRocket();
+                fireLaser();
+
+
             }
             else
             {
-                fireLaser();
+                fireRocket();
             }
 
         }
@@ -257,7 +265,6 @@ public class Player : MonoBehaviour
         if (Time.time > nextFire)
         {
             nextFire = Time.time + fireRate;
-
             Instantiate(projectilePrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
             source.PlayOneShot(shoot, 5f);
 
@@ -267,10 +274,36 @@ public class Player : MonoBehaviour
     {
         if (Time.time > nextFire)
         {
-            nextFire = Time.time + fireRate;
+            nextFire = Time.time + fireRate / 4;
 
-            Instantiate(projectilePrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
-            source.PlayOneShot(shoot, 5f);
+            //COMO COÑO RECOJO EL INPUT PARA PASARLO A UN SWITCH ?
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
+                Instantiate(laserPrefabV, new Vector3(transform.position.x, transform.position.y + 1.0f, transform.position.z)
+                    , laserPrefabV.transform.rotation);
+                source.PlayOneShot(shoot, 5f);
+            }
+            else if (Input.GetKey(KeyCode.DownArrow))
+            {
+                Instantiate(laserPrefabV, new Vector3(transform.position.x, transform.position.y - 1.0f, transform.position.z)
+                    , laserPrefabV.transform.rotation);
+                source.PlayOneShot(shoot, 5f);
+            }
+            else if (Input.GetKey(KeyCode.LeftArrow))
+            {
+
+                Instantiate(laserPrefabH, new Vector3(transform.position.x - 1.0f, transform.position.y, transform.position.z), laserPrefabH.transform.rotation);
+                source.PlayOneShot(shoot, 5f);
+            }
+
+            else if (Input.GetKey(KeyCode.RightArrow))
+            {
+
+                Instantiate(laserPrefabH, new Vector3(transform.position.x + 1.0f, transform.position.y, transform.position.z), laserPrefabH.transform.rotation);
+                source.PlayOneShot(shoot, 5f);
+            }
+
+
 
         }
     }

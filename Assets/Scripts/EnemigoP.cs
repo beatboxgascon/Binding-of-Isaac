@@ -1,15 +1,10 @@
 ﻿using UnityEngine;
 
-public class EnemigoP : MonoBehaviour
+public class EnemigoP : EnemigoDisparo
 {
     //public Transform target;//set target from inspector instead of looking in Update
     public GameObject projectilePrefab;
-    private float health;
-    private Player jugador;
-    float nextFire;
-
-    private AudioSource source;
-    public AudioClip shoot;
+    
 
     void Awake()
     {
@@ -19,7 +14,10 @@ public class EnemigoP : MonoBehaviour
     {
         nextFire = 0f;
         health = 20f;
+<<<<<<< HEAD
         
+=======
+>>>>>>> master
         jugador = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 

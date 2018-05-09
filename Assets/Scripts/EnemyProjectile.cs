@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyProjectile : MonoBehaviour
+public class EnemyProjectile : EnemigoDisparo
 {
-
-    private float speed;
+    
     private float direccionY;
     private float direccionX;
 
