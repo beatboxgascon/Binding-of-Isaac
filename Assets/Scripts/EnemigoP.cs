@@ -2,7 +2,7 @@
 
 public class EnemigoP : MonoBehaviour
 {
-    public Transform target;//set target from inspector instead of looking in Update
+    //public Transform target;//set target from inspector instead of looking in Update
     public GameObject projectilePrefab;
     private float health;
     private Player jugador;
@@ -19,7 +19,8 @@ public class EnemigoP : MonoBehaviour
     {
         nextFire = 0f;
         health = 20f;
-        jugador = target.GetComponent<Player>();
+        
+        jugador = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
     void Update()

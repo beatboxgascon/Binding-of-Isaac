@@ -11,8 +11,6 @@ public class Player : MonoBehaviour
     public string tipoProyectil;
     private int escena = 1;
 
-    private float invincibleTime;
-    private bool allowFire;
     private bool invincible;
 
 
@@ -27,6 +25,7 @@ public class Player : MonoBehaviour
     public Text FireRateText;
     private Animator anim;
     private Coin prueba;
+    public GameObject camara;
 
     private AudioSource source;
     public AudioClip shoot;
@@ -47,9 +46,7 @@ public class Player : MonoBehaviour
         SpeedText.text = "Speed: " + speed;
         DamageText.text = "Damage: " + damage;
         FireRateText.text = "Fire Rate: " + fireRate * 10;
-        allowFire = true;
         invincible = false;
-        invincibleTime = 0f;
         anim = GetComponent<Animator>();
         trampilla = GameObject.FindGameObjectWithTag("Trampilla");
         if (trampilla)
@@ -91,6 +88,11 @@ public class Player : MonoBehaviour
             anim.SetFloat("Movimiento", axisX);
         }
 
+        if (Input.GetKey("z"))
+        {
+
+        }
+
 
         if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))
         {
@@ -106,7 +108,7 @@ public class Player : MonoBehaviour
             if (Input.GetKey(KeyCode.DownArrow))
                 anim.SetFloat("MovimientoY", -0.5f);
 
-            if(tipoProyectil == "lagrima")
+            if (tipoProyectil == "lagrima")
             {
                 fireRocket();
             }
@@ -114,7 +116,7 @@ public class Player : MonoBehaviour
             {
                 fireLaser();
             }
-            
+
         }
 
 
@@ -185,11 +187,28 @@ public class Player : MonoBehaviour
             lives++;
             LivesText.text = "Lives: " + lives;
         }
-        else if (coll.gameObject.tag == "Trampilla")
+        else if (coll.gameObject.tag == "Entrada_N")
         {
-            escena++;
-            SceneManager.LoadScene(escena);
+            changeRoom(0,9,0,3.5f);
         }
+        else if (coll.gameObject.tag == "Entrada_S")
+        {
+            changeRoom(0, -9, 0, -3.5f);
+        }
+        else if (coll.gameObject.tag == "Entrada_E")
+        {
+            changeRoom(15, 0, 4, 0);
+        }
+        else if (coll.gameObject.tag == "Entrada_W")
+        {
+            changeRoom(-15, 0, -4, 0);
+        }
+    }
+
+    public void changeRoom(float camaraX, float camaraY, float personajeX, float personajeY)
+    {
+        camara.transform.position = new Vector3(camara.transform.position.x+camaraX, camara.transform.position.y + camaraY, camara.transform.position.z);
+        transform.position = new Vector3(transform.position.x+personajeX, transform.position.y + personajeY, transform.position.z);
     }
 
     public void UpdateStats(Coin c)

@@ -10,27 +10,23 @@ public class EsconderObjetos : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        foreach (var item in objetos)
-        {
-            if (item != null)
-            {
-                item.SetActive(false);
-            }
-
-        }
+        setObjectState(false);
     }
 
     // Update is called once per frame
     void Update()
     {
         if (AreEnemiesLeft())
+            setObjectState(true);
+    }
+
+    public void setObjectState(bool active)
+    {
+        foreach (var item in objetos)
         {
-            foreach (var item in objetos)
+            if (item != null)
             {
-                if (item != null)
-                {
-                    item.SetActive(true);
-                }
+                item.SetActive(active);
             }
         }
     }
@@ -38,6 +34,7 @@ public class EsconderObjetos : MonoBehaviour
     public bool AreEnemiesLeft()
     {
         return ((GameObject.FindGameObjectsWithTag("EnemyF").Length < 1) &&
-            (GameObject.FindGameObjectsWithTag("EnemyF_Projectile").Length < 1));
+            (GameObject.FindGameObjectsWithTag("EnemyF_Projectile").Length < 1) &&
+            (GameObject.FindGameObjectsWithTag("Enemy").Length < 1));
     }
 }
