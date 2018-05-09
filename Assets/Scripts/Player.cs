@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
     void Awake()
     {
         source = GetComponent<AudioSource>();
-        
+
     }
 
     // Use this for initialization
@@ -256,27 +256,27 @@ public class Player : MonoBehaviour
             //COMO COÑO RECOJO EL INPUT PARA PASARLO A UN SWITCH ?
             if (Input.GetKey(KeyCode.UpArrow))
             {
-                Instantiate(laserPrefabV, new Vector3(transform.position.x, transform.position.y + 0.6f, transform.position.z)
+                Instantiate(laserPrefabV, new Vector3(transform.position.x, transform.position.y + 1.0f, transform.position.z)
                     , laserPrefabV.transform.rotation);
                 source.PlayOneShot(shoot, 5f);
             }
             else if (Input.GetKey(KeyCode.DownArrow))
             {
-                Instantiate(laserPrefabV, new Vector3(transform.position.x, transform.position.y - 0.6f, transform.position.z)
+                Instantiate(laserPrefabV, new Vector3(transform.position.x, transform.position.y - 1.0f, transform.position.z)
                     , laserPrefabV.transform.rotation);
                 source.PlayOneShot(shoot, 5f);
             }
             else if (Input.GetKey(KeyCode.LeftArrow))
             {
 
-                Instantiate(laserPrefabH, new Vector3(transform.position.x - 0.6f, transform.position.y, transform.position.z), laserPrefabH.transform.rotation);
+                Instantiate(laserPrefabH, new Vector3(transform.position.x - 1.0f, transform.position.y, transform.position.z), laserPrefabH.transform.rotation);
                 source.PlayOneShot(shoot, 5f);
             }
 
             else if (Input.GetKey(KeyCode.RightArrow))
             {
 
-                Instantiate(laserPrefabH, new Vector3(transform.position.x + 0.6f, transform.position.y, transform.position.z), laserPrefabH.transform.rotation);
+                Instantiate(laserPrefabH, new Vector3(transform.position.x + 1.0f, transform.position.y, transform.position.z), laserPrefabH.transform.rotation);
                 source.PlayOneShot(shoot, 5f);
             }
 
