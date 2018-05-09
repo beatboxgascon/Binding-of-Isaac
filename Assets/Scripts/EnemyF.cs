@@ -3,7 +3,6 @@ using System.Collections;
 
 public class EnemyF : MonoBehaviour
 {
-    public Transform target;//set target from inspector instead of looking in Update
     private float speed;
 
     private float health;
@@ -23,14 +22,14 @@ public class EnemyF : MonoBehaviour
     {
         speed = 1f;
         health = 20f;
-        jugador = target.GetComponent<Player>();
+        jugador = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         //source.PlayOneShot(buzz, 5f);
         source.Play(0);
     }
 
     void Update()
     {
-        transform.position += (target.transform.position - transform.position).normalized * speed * Time.deltaTime;
+        transform.position += (jugador.transform.position - transform.position).normalized * speed * Time.deltaTime;
 
     }
 
