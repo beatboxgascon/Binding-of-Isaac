@@ -3,13 +3,9 @@ using System.Collections;
 
 public class EnemyF : Enemigo
 {
-    private float speed;
-
-    private float health;
 
     private Player jugador;
-
-    private AudioSource source;
+    
     public AudioClip buzz;
 
     void Awake()
@@ -20,12 +16,10 @@ public class EnemyF : Enemigo
 
     void Start()
     {
-        speed = 1f;
+        speed = 4f;
         health = 20f;
         jugador = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-
         source.Play(0);
-        jugador = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
     void Update()

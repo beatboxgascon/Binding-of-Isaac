@@ -4,21 +4,15 @@ using UnityEngine;
 
 public class EnemyF_Projectile : EnemigoDisparo
 {
-    private Player jugador;
-    public Transform target;
     private Rigidbody2D rigid;
-    private float speed;
-    private float nextFire;
     public GameObject projectilePrefab;
-    private float health;
-
-    private AudioSource source;
-    public AudioClip shoot;
     // Use this for initialization
 
     void Awake()
     {
         source = GetComponent<AudioSource>();
+
+        jugador = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
     void Start()
@@ -34,7 +28,7 @@ public class EnemyF_Projectile : EnemigoDisparo
     // Update is called once per frame
     void Update()
     {
-        transform.position += (target.transform.position - transform.position).normalized * speed * Time.deltaTime;
+        transform.position += (jugador.transform.position - transform.position).normalized * speed * Time.deltaTime;
         //Congelar();
 
         fireRocket();
@@ -45,7 +39,7 @@ public class EnemyF_Projectile : EnemigoDisparo
         rigid.constraints = RigidbodyConstraints2D.FreezeAll;
         yield return new WaitForSeconds(2);
         rigid.constraints = RigidbodyConstraints2D.None;
-        transform.position += (target.transform.position - transform.position).normalized * speed * Time.deltaTime;
+        transform.position += (jugador.transform.position - transform.position).normalized * speed * Time.deltaTime;
 
     }
     void OnTriggerEnter2D(Collider2D coll)
