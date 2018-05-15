@@ -10,14 +10,11 @@ public class Player : MonoBehaviour
     public static float speed = 5f;
     public static float fireRate = 0.7f;
     public static float damage = 10f;
+    public static int coins = 0;
     public string tipoProyectil;
-    private int escena = 1;
 
     private bool invincible;
 
-
-
-    public GameObject trampilla;
     float nextFire;
     public GameObject projectilePrefab;
     public GameObject laserPrefabV;
@@ -26,6 +23,7 @@ public class Player : MonoBehaviour
     public Text SpeedText;
     public Text DamageText;
     public Text FireRateText;
+    public Text CoinsText;
     private Animator anim;
     private Coin prueba;
     public GameObject camara;
@@ -37,28 +35,21 @@ public class Player : MonoBehaviour
     void Awake()
     {
         source = GetComponent<AudioSource>();
-
     }
 
     // Use this for initialization
     void Start()
     {
         Screen.SetResolution(1920, 1080, true);
-        escena = SceneManager.GetActiveScene().buildIndex;
         nextFire = 0f;
         tipoProyectil = "lagrima";
         LivesText.text = "Lives: " + lives;
         SpeedText.text = "Speed: " + speed;
         DamageText.text = "Damage: " + damage;
+        CoinsText.text = "Coins: " + coins;
         FireRateText.text = "Fire Rate: " + fireRate * 10;
         invincible = false;
         anim = GetComponent<Animator>();
-        trampilla = GameObject.FindGameObjectWithTag("Trampilla");
-        if (trampilla)
-        {
-            trampilla.SetActive(false);
-        }
-
     }
 
 
@@ -92,12 +83,6 @@ public class Player : MonoBehaviour
             axisX = -0.5f;
             anim.SetFloat("Movimiento", axisX);
         }
-
-        if (Input.GetKey("z"))
-        {
-
-        }
-
 
         if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))
         {
@@ -133,14 +118,6 @@ public class Player : MonoBehaviour
         else
             transform.Translate(new Vector3(axisX, axisY) * Time.deltaTime * speed);
 
-        if (OpenTrapdoor())
-        {
-            if (trampilla)
-            {
-                trampilla.SetActive(true);
-            }
-
-        }
 
     }
 
@@ -153,32 +130,28 @@ public class Player : MonoBehaviour
 
         if (coll.gameObject.tag == "Trophy")
         {
-            escena++;
-            SceneManager.LoadScene(escena);
+            SceneManager.LoadScene("Victoria");
         }
+
+        if (coll.gameObject.tag == "Moneda")
+        {
+            coins++;
+            Destroy(coll.gameObject);
+        }
+
+
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Trophy")
-        {
-            escena++;
-            SceneManager.LoadScene(escena);
-        }
         if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "EnemyF" ||
             collision.gameObject.tag == "EnemyF_Projectile")
             LoseLife();
     }
 
-    public bool OpenTrapdoor()
-    {
-        return ((GameObject.FindGameObjectsWithTag("EnemyF").Length < 1) &&
-            (GameObject.FindGameObjectsWithTag("EnemyF_Projectile").Length < 1));
-    }
-
-
     void OnCollisionEnter2D(Collision2D coll)
     {
+
         if (coll.gameObject.tag == "Coin")
         {
             Destroy(coll.gameObject);
