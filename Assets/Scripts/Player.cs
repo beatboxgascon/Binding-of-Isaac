@@ -135,7 +135,7 @@ public class Player : MonoBehaviour
 
         if (coll.gameObject.tag == "Moneda")
         {
-            coins++;
+            updateCoins(1);
             Destroy(coll.gameObject);
         }
 
@@ -156,15 +156,11 @@ public class Player : MonoBehaviour
         {
             Destroy(coll.gameObject);
             UpdateStats(coll.gameObject.GetComponent<Coin>());
-            DamageText.text = "Damage: " + damage;
-            SpeedText.text = "Speed: " + speed;
-            FireRateText.text = "Fire Rate: " + fireRate * 10;
         }
         else if (coll.gameObject.tag == "Heart")
         {
             Destroy(coll.gameObject);
-            lives++;
-            LivesText.text = "Lives: " + lives;
+            LifeUp();
         }
         else if (coll.gameObject.tag == "Entrada_N")
         {
@@ -182,7 +178,26 @@ public class Player : MonoBehaviour
         {
             changeRoom(-15, 0, -4, 0);
         }
+        else if (coll.gameObject.tag == "ObjetoTienda" && coins>=15)
+        {
+            Destroy(coll.gameObject);
+            UpdateStats(coll.gameObject.GetComponent<Coin>());
+            updateCoins(-15);
+        }
+        else if (coll.gameObject.tag == "CorazonTienda" && coins >= 5)
+        {
+            Destroy(coll.gameObject);
+            LifeUp();
+            updateCoins(-5);
+        }
     }
+
+    public void updateCoins(int price)
+    {
+        coins += price;
+        CoinsText.text = "Coins: " + coins;
+    }
+
 
     public void changeRoom(float camaraX, float camaraY, float personajeX, float personajeY)
     {
@@ -195,6 +210,15 @@ public class Player : MonoBehaviour
         damage += c.GetObjeto().Damage;
         speed += c.GetObjeto().Speed;
         fireRate -= c.GetObjeto().FireRate * 0.1f;
+        DamageText.text = "Damage: " + damage;
+        SpeedText.text = "Speed: " + speed;
+        FireRateText.text = "Fire Rate: " + fireRate * 10;
+    }
+
+    public void LifeUp()
+    {
+        lives++;
+        LivesText.text = "Lives: " + lives;
     }
 
     public float GetDamage()
@@ -216,10 +240,9 @@ public class Player : MonoBehaviour
 
         }
 
-
         if (lives <= 0)
         {
-            SceneManager.LoadScene(6);
+            SceneManager.LoadScene("Derrota");
         }
 
         LivesText.text = "Lives: " + lives;
