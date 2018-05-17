@@ -20,7 +20,7 @@ public class Spawner : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
 
-        GameObject enemy = (GameObject)Instantiate(enemyPrefab, new Vector3(Random.Range(-2, 2), 5), Quaternion.identity);
+        //GameObject enemy = (GameObject)Instantiate(enemyPrefab, new Vector3(Random.Range(-2, 2), 5), Quaternion.identity);
 
         StartCoroutine("SpawnEnemyWaitTime");
     }

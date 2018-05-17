@@ -29,22 +29,10 @@ public class AnotherBoss : EnemigoDisparo
 
     void Update()
     {
+        Kill();
         fireRocket();
     }
 
-    void OnTriggerEnter2D(Collider2D coll)
-    {
-        if (coll.gameObject.tag == "Projectile")
-        {
-            health -= jugador.GetDamage();
-            if (health <= 0)
-            {
-                Destroy(gameObject);
-            }
-
-            Destroy(coll.gameObject);
-        }
-    }
 
     void fireRocket()
     {

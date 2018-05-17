@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
     public Text DamageText;
     public Text FireRateText;
     public Text CoinsText;
+    public Text ChargeText;
     private Animator anim;
     public GameObject camara;
     public GameObject room;
@@ -50,6 +51,7 @@ public class Player : MonoBehaviour
         DamageText.text = "Damage: " + damage;
         CoinsText.text = "Coins: " + coins;
         FireRateText.text = "Fire Rate: " + fireRate * 10;
+        ChargeText.text = "";
         invincible = false;
         anim = GetComponent<Animator>();
     }
@@ -91,6 +93,7 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && activeObject!=null)
         {
             activeObject.Activate();
+            cargaObjeto = 0;
         }
 
         if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))
@@ -201,9 +204,11 @@ public class Player : MonoBehaviour
         }
         else if (coll.gameObject.tag == "ObjetoActivo")
         {
- 
+            
             activeObject = coll.gameObject.GetComponent<RandomActiveObject>();
+            cargaObjeto = activeObject.GetCargas();
             coll.gameObject.SetActive(false);
+            ChargeText.text = "Charge: " + cargaObjeto;
         }
     }
 
@@ -212,12 +217,24 @@ public class Player : MonoBehaviour
         this.room = room;
     }
 
+    public void updateCharges(int carga)
+    {
+        if(cargaObjeto<=activeObject.GetCargas() && carga>0 )
+            cargaObjeto += carga;
+        ChargeText.text = "Charge: " + cargaObjeto;
+    }
+
     public Room GetRoom() { return room.GetComponent<Room>(); }
 
     public void updateCoins(int price)
     {
         coins += price;
         CoinsText.text = "Coins: " + coins;
+    }
+
+    public bool hasActiveObject()
+    {
+        return activeObject != null;
     }
 
 

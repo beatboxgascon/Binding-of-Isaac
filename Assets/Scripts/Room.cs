@@ -8,19 +8,27 @@ public class Room : MonoBehaviour {
     public List<GameObject> puertas;
     public List<GameObject> enemigosHabitacion;
     Collider2D prueba;
+    bool addedCharge;
 
     // Use this for initialization
     void Start()
     {
         setObjectState(false);
         setEnemiesState(false);
+        addedCharge = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (AreEnemiesLeft())
+        if (AreEnemiesLeft() && !addedCharge)
+        {
+            addedCharge = true;
+            if(GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().hasActiveObject())
+                GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().updateCharges(1);
             setObjectState(true);
+        }
+            
     }
 
     public void setObjectState(bool active)
@@ -81,7 +89,6 @@ public class Room : MonoBehaviour {
     }
 
 
-
     public bool AreEnemiesLeft()
     {
         int muertos = 0;
@@ -92,7 +99,7 @@ public class Room : MonoBehaviour {
                 muertos++;
             }
         }
-
+        
         return enemigosHabitacion.Count == muertos;
     }
 }

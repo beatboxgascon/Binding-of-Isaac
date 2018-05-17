@@ -7,12 +7,25 @@ public class RandomActiveObject : MonoBehaviour {
 
     private Sprite[] spritesObjetos;
     private int currentSprite;
+    private int cargas;
 
     void Start()
     {
         currentSprite = Random.Range(0, 11);
         spritesObjetos = Resources.LoadAll<Sprite>("ObjetosActivos");
         GetComponent<SpriteRenderer>().sprite = spritesObjetos[currentSprite];
+
+        if (currentSprite < 4)
+        {
+            cargas = 3;
+        }else if (currentSprite>=4 && currentSprite < 8)
+        {
+            cargas = 4;
+        }
+        else
+        {
+            cargas = 5;
+        }
     }
 
     public RandomActiveObject(int currentSprite)
@@ -36,5 +49,6 @@ public class RandomActiveObject : MonoBehaviour {
         GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().GetRoom().RoomDamage();
     }
     
+    public int GetCargas() { return cargas; }
 
 }
