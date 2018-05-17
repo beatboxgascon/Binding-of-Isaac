@@ -18,11 +18,11 @@ namespace Assets.Scripts
             FireRate = 1;
             Damage = 0;
             int i = 0;
-            StreamReader inpit = new StreamReader("objetos.txt");
+            StreamReader input = new StreamReader("objetos.txt");
             string linea;
             do
             {
-                linea = inpit.ReadLine();
+                linea = input.ReadLine();
                 if (linea != null && i == posicion)
                 {
                     string[] stats = linea.Split(';');
@@ -32,7 +32,7 @@ namespace Assets.Scripts
                 }
             } while (linea != null);
 
-            inpit.Close();
+            input.Close();
         }
     }
 }

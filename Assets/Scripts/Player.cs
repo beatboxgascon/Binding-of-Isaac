@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     public static float damage = 10f;
     public static int coins = 0;
     public string tipoProyectil;
+    public static int cargaObjeto = 0;
+    public RandomActiveObject activeObject;
 
     private bool invincible;
 
@@ -25,7 +27,6 @@ public class Player : MonoBehaviour
     public Text FireRateText;
     public Text CoinsText;
     private Animator anim;
-    private Coin prueba;
     public GameObject camara;
 
     private AudioSource source;
@@ -155,7 +156,7 @@ public class Player : MonoBehaviour
         if (coll.gameObject.tag == "Coin")
         {
             Destroy(coll.gameObject);
-            UpdateStats(coll.gameObject.GetComponent<Coin>());
+            UpdateStats(coll.gameObject.GetComponent<RandomObject>());
         }
         else if (coll.gameObject.tag == "Heart")
         {
@@ -181,7 +182,7 @@ public class Player : MonoBehaviour
         else if (coll.gameObject.tag == "ObjetoTienda" && coins>=15)
         {
             Destroy(coll.gameObject);
-            UpdateStats(coll.gameObject.GetComponent<Coin>());
+            UpdateStats(coll.gameObject.GetComponent<RandomObject>());
             updateCoins(-15);
         }
         else if (coll.gameObject.tag == "CorazonTienda" && coins >= 5)
@@ -205,7 +206,7 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(transform.position.x+personajeX, transform.position.y + personajeY, transform.position.z);
     }
 
-    public void UpdateStats(Coin c)
+    public void UpdateStats(RandomObject c)
     {
         damage += c.GetObjeto().Damage;
         speed += c.GetObjeto().Speed;
