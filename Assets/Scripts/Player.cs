@@ -43,7 +43,7 @@ public class Player : MonoBehaviour
     {
         Screen.SetResolution(1920, 1080, true);
         nextFire = 0f;
-        tipoProyectil = "lagrima";
+        tipoProyectil = "laser";
         LivesText.text = "Lives: " + lives;
         SpeedText.text = "Speed: " + speed;
         DamageText.text = "Damage: " + damage;
@@ -269,32 +269,32 @@ public class Player : MonoBehaviour
     {
         if (Time.time > nextFire)
         {
-            nextFire = Time.time + fireRate / 4;
+            nextFire = Time.time + fireRate / 45;
 
             //COMO COÑO RECOJO EL INPUT PARA PASARLO A UN SWITCH ?
             if (Input.GetKey(KeyCode.UpArrow))
             {
-                Instantiate(laserPrefabV, new Vector3(transform.position.x, transform.position.y + 1.0f, transform.position.z)
+                Instantiate(laserPrefabV, new Vector3(transform.position.x, transform.position.y + 3.5f, transform.position.z)
                     , laserPrefabV.transform.rotation);
                 source.PlayOneShot(shoot, 5f);
             }
             else if (Input.GetKey(KeyCode.DownArrow))
             {
-                Instantiate(laserPrefabV, new Vector3(transform.position.x, transform.position.y - 1.0f, transform.position.z)
+                Instantiate(laserPrefabV, new Vector3(transform.position.x, transform.position.y - 3.5f, transform.position.z)
                     , laserPrefabV.transform.rotation);
                 source.PlayOneShot(shoot, 5f);
             }
             else if (Input.GetKey(KeyCode.LeftArrow))
             {
 
-                Instantiate(laserPrefabH, new Vector3(transform.position.x - 1.0f, transform.position.y, transform.position.z), laserPrefabH.transform.rotation);
+                Instantiate(laserPrefabH, new Vector3(transform.position.x - 6.5f, transform.position.y, transform.position.z), laserPrefabH.transform.rotation);
                 source.PlayOneShot(shoot, 5f);
             }
 
             else if (Input.GetKey(KeyCode.RightArrow))
             {
 
-                Instantiate(laserPrefabH, new Vector3(transform.position.x + 1.0f, transform.position.y, transform.position.z), laserPrefabH.transform.rotation);
+                Instantiate(laserPrefabH, new Vector3(transform.position.x + 6.5f, transform.position.y, transform.position.z), laserPrefabH.transform.rotation);
                 source.PlayOneShot(shoot, 5f);
             }
 
