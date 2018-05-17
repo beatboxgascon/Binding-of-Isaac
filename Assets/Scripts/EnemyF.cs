@@ -4,15 +4,12 @@ using System.Collections;
 public class EnemyF : Enemigo
 {
 
-    private Player jugador;
-    
     public AudioClip buzz;
 
     void Awake()
     {
         source = GetComponent<AudioSource>();
     }
-
 
     void Start()
     {
@@ -25,22 +22,10 @@ public class EnemyF : Enemigo
     void Update()
     {
         transform.position += (jugador.transform.position - transform.position).normalized * speed * Time.deltaTime;
-
+        Kill();
     }
 
-    void OnTriggerEnter2D(Collider2D coll)
-    {
-        if (coll.gameObject.tag == "Projectile")
-        {
-            health -= jugador.GetDamage();
-            if (health <= 0)
-            {
-                Destroy(gameObject);
-            }
-
-            Destroy(coll.gameObject);
-        }
-    }
+    
 
 
 }

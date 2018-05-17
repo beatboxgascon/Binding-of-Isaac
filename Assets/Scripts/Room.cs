@@ -58,6 +58,7 @@ public class Room : MonoBehaviour {
     {
         if (player.CompareTag("Player"))
         {
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().SetRoom(this.gameObject);
             setEnemiesState(true);
         }
 
@@ -66,6 +67,17 @@ public class Room : MonoBehaviour {
         //    Destroy(player.gameObject);
         //    player.transform.position.x
         //}
+    }
+
+    public void RoomDamage()
+    {
+        foreach (var item in enemigosHabitacion)
+        {
+            if (item != null)
+            {
+                item.GetComponent<Enemigo>().doDamage(50f);
+            }
+        }
     }
 
 

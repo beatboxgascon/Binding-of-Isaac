@@ -22,16 +22,10 @@ public class EnemyProjectile : EnemigoDisparo
         if (screenPos.y >= Screen.height)
             Destroy(gameObject);
 
+        Kill();
         transform.Translate(new Vector3(1, 0) * Time.deltaTime * speed);
     }
 
-    void OnTriggerEnter2D(Collider2D coll)
-    {
-        if (coll.gameObject.tag == "Player")
-        {
-            Destroy(gameObject);
-        }
-    }
     void OnBecameInvisible()
     {
         Destroy(gameObject);

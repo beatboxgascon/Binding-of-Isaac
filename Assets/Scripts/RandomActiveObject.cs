@@ -15,8 +15,26 @@ public class RandomActiveObject : MonoBehaviour {
         GetComponent<SpriteRenderer>().sprite = spritesObjetos[currentSprite];
     }
 
+    public RandomActiveObject(int currentSprite)
+    {
+        this.currentSprite = currentSprite;
+    }
+
     public int getCurrentSprite() { return currentSprite; }
 
+    public void Activate()
+    {
+        //if(currentSprite%2==0)
+        //    GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().LifeUp();
+        //else
+        //    GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().updateCoins(5);
+        RoomDamage();
+    }
 
+    public void RoomDamage()
+    {
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().GetRoom().RoomDamage();
+    }
     
+
 }

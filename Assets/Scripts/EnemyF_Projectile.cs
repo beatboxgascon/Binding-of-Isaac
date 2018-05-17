@@ -30,7 +30,7 @@ public class EnemyF_Projectile : EnemigoDisparo
     {
         transform.position += (jugador.transform.position - transform.position).normalized * speed * Time.deltaTime;
         //Congelar();
-
+        Kill();
         fireRocket();
     }
     //Me temo que esto no se llega a usar o no funciona como se esperaba.
@@ -41,19 +41,6 @@ public class EnemyF_Projectile : EnemigoDisparo
         rigid.constraints = RigidbodyConstraints2D.None;
         transform.position += (jugador.transform.position - transform.position).normalized * speed * Time.deltaTime;
 
-    }
-    void OnTriggerEnter2D(Collider2D coll)
-    {
-        if (coll.gameObject.tag == "Projectile")
-        {
-            health -= jugador.GetDamage();
-            if (health <= 0)
-            {
-                Destroy(gameObject);
-            }
-
-            Destroy(coll.gameObject);
-        }
     }
 
     void fireRocket()

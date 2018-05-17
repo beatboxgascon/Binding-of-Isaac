@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     public static float speed = 5f;
     public static float fireRate = 0.7f;
     public static float damage = 10f;
-    public static int coins = 0;
+    public static int coins = 15;
     public string tipoProyectil;
     public static int cargaObjeto = 0;
     public RandomActiveObject activeObject;
@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
     public Text CoinsText;
     private Animator anim;
     public GameObject camara;
+    public GameObject room;
 
     private AudioSource source;
     public AudioClip shoot;
@@ -43,7 +44,7 @@ public class Player : MonoBehaviour
     {
         Screen.SetResolution(1920, 1080, true);
         nextFire = 0f;
-        tipoProyectil = "laser";
+        tipoProyectil = "projectile";
         LivesText.text = "Lives: " + lives;
         SpeedText.text = "Speed: " + speed;
         DamageText.text = "Damage: " + damage;
@@ -83,6 +84,13 @@ public class Player : MonoBehaviour
         {
             axisX = -0.5f;
             anim.SetFloat("Movimiento", axisX);
+        }
+
+        
+
+        if (Input.GetKeyDown(KeyCode.Space) && activeObject!=null)
+        {
+            activeObject.Activate();
         }
 
         if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))
@@ -191,7 +199,20 @@ public class Player : MonoBehaviour
             LifeUp();
             updateCoins(-5);
         }
+        else if (coll.gameObject.tag == "ObjetoActivo")
+        {
+ 
+            activeObject = coll.gameObject.GetComponent<RandomActiveObject>();
+            coll.gameObject.SetActive(false);
+        }
     }
+
+    public void SetRoom(GameObject room)
+    {
+        this.room = room;
+    }
+
+    public Room GetRoom() { return room.GetComponent<Room>(); }
 
     public void updateCoins(int price)
     {
@@ -218,8 +239,11 @@ public class Player : MonoBehaviour
 
     public void LifeUp()
     {
-        lives++;
-        LivesText.text = "Lives: " + lives;
+        if (lives < 9)
+        {
+            lives++;
+            LivesText.text = "Lives: " + lives;
+        }
     }
 
     public float GetDamage()
