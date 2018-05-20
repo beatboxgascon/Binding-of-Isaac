@@ -1,11 +1,7 @@
 ﻿using UnityEngine;
-
 public class EnemigoP : EnemigoDisparo
 {
-    //public Transform target;//set target from inspector instead of looking in Update
     public GameObject projectilePrefab;
-    
-
     void Awake()
     {
         source = GetComponent<AudioSource>();
@@ -14,18 +10,14 @@ public class EnemigoP : EnemigoDisparo
     {
         nextFire = 0f;
         health = 20f;
-
         jugador = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
-
     void Update()
     {
-        Kill();
-        fireRocket();
+        Die();
+        FireRocket();
     }
-
-
-    void fireRocket()
+     void FireRocket()
     {
         if (Time.time > nextFire)
         {
@@ -39,7 +31,13 @@ public class EnemigoP : EnemigoDisparo
             {
                 Instantiate(projectilePrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
             }
-
+        }
+    }
+    void OnTriggerEnter2D(Collider2D coll)
+    {
+        if (coll.gameObject.tag == "Projectile")
+        {
+            health -= jugador.GetDamage();
         }
     }
 }

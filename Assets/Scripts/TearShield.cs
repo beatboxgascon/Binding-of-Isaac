@@ -1,13 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
-
-public class Projectile : MonoBehaviour
+public class TearShield : MonoBehaviour
 {
     private float speed;
     private float direccionY;
     private float direccionX;
-
-    // Use this for initialization
     void Start()
     {
         speed = 3;
@@ -32,8 +28,6 @@ public class Projectile : MonoBehaviour
             direccionX = 1;
         }
     }
-
-    // Update is called once per frame
     void Update()
     {
         Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
@@ -42,11 +36,15 @@ public class Projectile : MonoBehaviour
 
         transform.Translate(new Vector3(direccionX, direccionY) * Time.deltaTime * speed);
     }
-
     void OnTriggerEnter2D(Collider2D coll)
     {
         if (coll.gameObject.tag.Contains("Enemy"))
         {
+            Destroy(gameObject);
+        }
+        else if (coll.gameObject.tag.Contains("enemyProjectile"))
+        {
+            Destroy(coll.gameObject);
             Destroy(gameObject);
         }
     }

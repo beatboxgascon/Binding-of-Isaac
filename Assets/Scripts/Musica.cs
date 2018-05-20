@@ -1,12 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-
 public class Musica : MonoBehaviour
 {
-
-
     private AudioSource _audioSource;
     private void Awake()
     {
@@ -16,17 +11,13 @@ public class Musica : MonoBehaviour
             _audioSource = GetComponent<AudioSource>();
             getEscena();
         }
-
     }
-
     void Update()
     {
         getEscena();
     }
-
     public void PlayMusic()
     {
-
         if (_audioSource.isPlaying) return;
         _audioSource.Play();
     }
@@ -46,7 +37,6 @@ public class Musica : MonoBehaviour
         {
             GameObject.FindGameObjectWithTag("Music").GetComponent<Musica>().StopMusic();
         }
-
     }
 
     bool esEscena()

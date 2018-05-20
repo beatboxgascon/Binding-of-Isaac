@@ -1,13 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
-
-public class ProjectileEscudo : MonoBehaviour
+public class Tear : MonoBehaviour
 {
     private float speed;
     private float direccionY;
     private float direccionX;
-
-    // Use this for initialization
     void Start()
     {
         speed = 3;
@@ -32,8 +28,6 @@ public class ProjectileEscudo : MonoBehaviour
             direccionX = 1;
         }
     }
-
-    // Update is called once per frame
     void Update()
     {
         Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
@@ -42,7 +36,6 @@ public class ProjectileEscudo : MonoBehaviour
 
         transform.Translate(new Vector3(direccionX, direccionY) * Time.deltaTime * speed);
     }
-
     void OnTriggerEnter2D(Collider2D coll)
     {
         if (coll.gameObject.tag.Contains("Enemy"))

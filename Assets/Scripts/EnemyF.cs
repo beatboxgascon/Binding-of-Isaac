@@ -1,16 +1,11 @@
 ﻿using UnityEngine;
-using System.Collections;
-
 public class EnemyF : Enemigo
 {
-
     public AudioClip buzz;
-
     void Awake()
     {
         source = GetComponent<AudioSource>();
     }
-
     void Start()
     {
         speed = 4f;
@@ -18,14 +13,16 @@ public class EnemyF : Enemigo
         jugador = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         source.Play(0);
     }
-
     void Update()
     {
         transform.position += (jugador.transform.position - transform.position).normalized * speed * Time.deltaTime;
-        Kill();
+        Die();
     }
-
-    
-
-
+    protected void OnTriggerEnter2D(Collider2D coll)
+    {
+        if (coll.gameObject.tag == "Projectile")
+        {
+            health -= jugador.GetDamage();
+        }
+    }
 }

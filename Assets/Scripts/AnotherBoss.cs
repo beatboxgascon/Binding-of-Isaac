@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
-
 public class AnotherBoss : EnemigoDisparo
 {
-    public Transform target;//set target from inspector instead of looking in Update
+    public Transform target;
     public GameObject projectilePrefab;
     int angle1, angle2, angle3;
 
@@ -18,10 +17,9 @@ public class AnotherBoss : EnemigoDisparo
         /*
          * --Version con 2 proyectiles de misma direccion pero sentido opuesto.
          * 
-        angle1 = 0;
-        angle2 = 180;
+            angle1 = 0;
+            angle2 = 180;
         */
-
         angle1 = 0;
         angle2 = 120;
         angle3 = 240;
@@ -29,14 +27,13 @@ public class AnotherBoss : EnemigoDisparo
 
     void Update()
     {
-        Kill();
-        fireRocket();
+        Die();
+        FireRocket();
     }
 
 
-    void fireRocket()
+    void FireRocket()
     {
-        
         if (Time.time > nextFire)
         {
             source.PlayOneShot(shoot, 5f);
@@ -75,8 +72,6 @@ public class AnotherBoss : EnemigoDisparo
             angle1 += 15;
             angle2 += 15;
             angle3 += 15;
-
-
         }
     }
 }

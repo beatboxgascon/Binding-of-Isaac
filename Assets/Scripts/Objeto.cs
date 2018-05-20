@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-
 namespace Assets.Scripts
 {
     public class Objeto
@@ -11,7 +7,6 @@ namespace Assets.Scripts
         public float Speed { get; set; }
         public float FireRate { get; set; }
         public float Damage { get; set; }
-
         public Objeto(int posicion)
         {
             Speed = 0;
@@ -30,8 +25,8 @@ namespace Assets.Scripts
                     FireRate = Convert.ToSingle(stats[1]);
                     Damage = Convert.ToSingle(stats[2]);
                 }
-            } while (linea != null);
-
+            }
+            while (linea != null);
             input.Close();
         }
     }

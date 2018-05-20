@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-
 //Clase padre de la que heredaran todos los enemigos que se encuentran a lo largo del juego.
 public class Enemigo : MonoBehaviour
 {
@@ -15,21 +14,9 @@ public class Enemigo : MonoBehaviour
         health -= damage;
         Destroy(gameObject);
     }
-
-    protected void OnTriggerEnter2D(Collider2D coll)
-    {
-        if (coll.gameObject.tag == "Projectile")
-        {
-            health -= jugador.GetDamage();
-            Destroy(coll.gameObject);
-        }
-    }
-
-    protected void Kill()
+    protected void Die()
     {
         if (health <= 0)
             Destroy(gameObject);
     }
 }
-
-

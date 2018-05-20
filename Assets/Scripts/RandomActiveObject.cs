@@ -1,24 +1,19 @@
-﻿using Assets.Scripts;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class RandomActiveObject : MonoBehaviour {
-
+﻿using UnityEngine;
+public class RandomActiveObject : MonoBehaviour
+{
     private Sprite[] spritesObjetos;
     private int currentSprite;
     private int cargas;
-
     void Start()
     {
         currentSprite = Random.Range(0, 11);
         spritesObjetos = Resources.LoadAll<Sprite>("ObjetosActivos");
         GetComponent<SpriteRenderer>().sprite = spritesObjetos[currentSprite];
-
         if (currentSprite < 4)
         {
             cargas = 3;
-        }else if (currentSprite>=4 && currentSprite < 8)
+        }
+        else if (currentSprite >= 4 && currentSprite < 8)
         {
             cargas = 4;
         }
@@ -32,9 +27,7 @@ public class RandomActiveObject : MonoBehaviour {
     {
         this.currentSprite = currentSprite;
     }
-
     public int getCurrentSprite() { return currentSprite; }
-
     public void Activate()
     {
         //if(currentSprite%2==0)
@@ -48,7 +41,5 @@ public class RandomActiveObject : MonoBehaviour {
     {
         GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().GetRoom().RoomDamage();
     }
-    
     public int GetCargas() { return cargas; }
-
 }

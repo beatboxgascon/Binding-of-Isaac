@@ -1,18 +1,12 @@
 ﻿using UnityEngine;
-
-public class LaserProjectileH : MonoBehaviour
+public class TearXRay : MonoBehaviour
 {
     private float speed;
     private float direccionY;
     private float direccionX;
-    private Player jugador;
-
-
-
-    // Use this for initialization
     void Start()
     {
-        speed = 150;
+        speed = 3;
         if (Input.GetKey(KeyCode.DownArrow))
         {
             direccionY = -1;
@@ -33,11 +27,7 @@ public class LaserProjectileH : MonoBehaviour
             direccionY = 0;
             direccionX = 1;
         }
-
-        jugador = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
-
-    // Update is called once per frame
     void Update()
     {
         Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
@@ -45,15 +35,6 @@ public class LaserProjectileH : MonoBehaviour
             Destroy(gameObject);
 
         transform.Translate(new Vector3(direccionX, direccionY) * Time.deltaTime * speed);
-        transform.position = new Vector3(jugador.transform.position.x, transform.position.y);
-    }
-
-    void OnTriggerEnter2D(Collider2D coll)
-    {
-        if (coll.gameObject.tag.Contains("Enemy"))
-        {
-            Destroy(gameObject);
-        }
     }
     void OnBecameInvisible()
     {

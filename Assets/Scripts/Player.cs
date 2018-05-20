@@ -1,24 +1,24 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
 public class Player : MonoBehaviour
 {
     //8f como maximo para la velocidad.
     //0.2f como limite para el firerate.
-    public static int lives = 5;
-    public static float speed = 5f;
-    public static float fireRate = 0.7f;
-    public static float damage = 10f;
-    public static int coins = 15;
+    public static int lives;
+    public static float speed;
+    public static float fireRate;
+    public static float damage;
+    public static int coins;
     public string tipoProyectil;
-    public static int cargaObjeto = 0;
+    public static int cargaObjeto;
     public RandomActiveObject activeObject;
-
     private bool invincible;
-
     float nextFire;
-    public GameObject projectilePrefab;
+    public GameObject tear;
+    public GameObject tearXRay;
+    public GameObject tearBounce;
+    public GameObject tearShield;
     public GameObject laserPrefabV;
     public GameObject laserPrefabH;
     public Text LivesText;
@@ -30,7 +30,6 @@ public class Player : MonoBehaviour
     private Animator anim;
     public GameObject camara;
     public GameObject room;
-
     private AudioSource source;
     public AudioClip shoot;
     public AudioClip hitSound;
@@ -39,13 +38,17 @@ public class Player : MonoBehaviour
     {
         source = GetComponent<AudioSource>();
     }
-
-    // Use this for initialization
     void Start()
     {
+        lives = 5;
+        speed = 5f;
+        fireRate = 0.7f;
+        damage = 3f;
+        cargaObjeto = 0;
+        coins = 15;
         Screen.SetResolution(1920, 1080, true);
         nextFire = 0f;
-        tipoProyectil = "projectile";
+        tipoProyectil = "triple";
         LivesText.text = "Lives: " + lives;
         SpeedText.text = "Speed: " + speed;
         DamageText.text = "Damage: " + damage;
@@ -56,8 +59,6 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
-
-    // Update is called once per frame
     void Update()
     {
         float axisX = 0;
@@ -88,9 +89,7 @@ public class Player : MonoBehaviour
             anim.SetFloat("Movimiento", axisX);
         }
 
-        
-
-        if (Input.GetKeyDown(KeyCode.Space) && activeObject!=null)
+        if (Input.GetKeyDown(KeyCode.Space) && activeObject != null)
         {
             activeObject.Activate();
             cargaObjeto = 0;
@@ -109,19 +108,36 @@ public class Player : MonoBehaviour
                 anim.SetFloat("MovimientoY", 0.5f);
             if (Input.GetKey(KeyCode.DownArrow))
                 anim.SetFloat("MovimientoY", -0.5f);
-            
 
             if (tipoProyectil == "laser")
             {
-                fireLaser();
+                FireLaser();
             }
-            else
+            else if (tipoProyectil == "normal")
             {
-                fireRocket();
+                FireTear();
             }
-
+            else if (tipoProyectil == "doble")
+            {
+                FireDoubleTear();
+            }
+            else if (tipoProyectil == "triple")
+            {
+                FireTripleTear();
+            }
+            else if (tipoProyectil == "Xray")
+            {
+                FireTearXRay();
+            }
+            else if (tipoProyectil == "escudo")
+            {
+                FireTearShield();
+            }
+            else if (tipoProyectil == "rebote")
+            {
+                FireTearBounce();
+            }
         }
-
 
         if (screenPos.x <= 0)
             transform.position = new Vector3(screenWorldPos.x + 0.05f, screenWorldPos.y);
@@ -129,10 +145,7 @@ public class Player : MonoBehaviour
             transform.position = new Vector3(screenWorldPos.x - 0.05f, screenWorldPos.y);
         else
             transform.Translate(new Vector3(axisX, axisY) * Time.deltaTime * speed);
-
-
     }
-
 
     void OnTriggerEnter2D(Collider2D coll)
     {
@@ -144,13 +157,11 @@ public class Player : MonoBehaviour
         {
             SceneManager.LoadScene("Victoria");
         }
-
         if (coll.gameObject.tag == "Moneda")
         {
             updateCoins(1);
             Destroy(coll.gameObject);
         }
-
 
     }
 
@@ -163,7 +174,6 @@ public class Player : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D coll)
     {
-
         if (coll.gameObject.tag == "Coin")
         {
             Destroy(coll.gameObject);
@@ -176,21 +186,21 @@ public class Player : MonoBehaviour
         }
         else if (coll.gameObject.tag == "Entrada_N")
         {
-            changeRoom(0,9,0,3.5f);
+            ChangeRoom(0, 9, 0, 3.5f);
         }
         else if (coll.gameObject.tag == "Entrada_S")
         {
-            changeRoom(0, -9, 0, -3.5f);
+            ChangeRoom(0, -9, 0, -3.5f);
         }
         else if (coll.gameObject.tag == "Entrada_E")
         {
-            changeRoom(15, 0, 4, 0);
+            ChangeRoom(15, 0, 4, 0);
         }
         else if (coll.gameObject.tag == "Entrada_W")
         {
-            changeRoom(-15, 0, -4, 0);
+            ChangeRoom(-15, 0, -4, 0);
         }
-        else if (coll.gameObject.tag == "ObjetoTienda" && coins>=15)
+        else if (coll.gameObject.tag == "ObjetoTienda" && coins >= 15)
         {
             Destroy(coll.gameObject);
             UpdateStats(coll.gameObject.GetComponent<RandomObject>());
@@ -204,7 +214,7 @@ public class Player : MonoBehaviour
         }
         else if (coll.gameObject.tag == "ObjetoActivo")
         {
-            
+
             activeObject = coll.gameObject.GetComponent<RandomActiveObject>();
             cargaObjeto = activeObject.GetCargas();
             coll.gameObject.SetActive(false);
@@ -219,7 +229,7 @@ public class Player : MonoBehaviour
 
     public void updateCharges(int carga)
     {
-        if(cargaObjeto<=activeObject.GetCargas() && carga>0 )
+        if (cargaObjeto <= activeObject.GetCargas() && carga > 0)
             cargaObjeto += carga;
         ChargeText.text = "Charge: " + cargaObjeto;
     }
@@ -237,11 +247,10 @@ public class Player : MonoBehaviour
         return activeObject != null;
     }
 
-
-    public void changeRoom(float camaraX, float camaraY, float personajeX, float personajeY)
+    public void ChangeRoom(float camaraX, float camaraY, float personajeX, float personajeY)
     {
-        camara.transform.position = new Vector3(camara.transform.position.x+camaraX, camara.transform.position.y + camaraY, camara.transform.position.z);
-        transform.position = new Vector3(transform.position.x+personajeX, transform.position.y + personajeY, transform.position.z);
+        camara.transform.position = new Vector3(camara.transform.position.x + camaraX, camara.transform.position.y + camaraY, camara.transform.position.z);
+        transform.position = new Vector3(transform.position.x + personajeX, transform.position.y + personajeY, transform.position.z);
     }
 
     public void UpdateStats(RandomObject c)
@@ -268,10 +277,8 @@ public class Player : MonoBehaviour
         return damage;
     }
 
-
     private void LoseLife()
     {
-
         if (!invincible)
         {
             invincible = true;
@@ -279,14 +286,12 @@ public class Player : MonoBehaviour
             lives--;
             source.PlayOneShot(hitSound, 5f);
             Invoke("resetInvulnerability", 1.4F);
-
         }
 
         if (lives <= 0)
         {
             SceneManager.LoadScene("Derrota");
         }
-
         LivesText.text = "Lives: " + lives;
     }
 
@@ -296,23 +301,150 @@ public class Player : MonoBehaviour
         anim.SetFloat("Inmune", 0);
     }
 
-    void fireRocket()
+    void FireTear()
     {
         if (Time.time > nextFire)
         {
             nextFire = Time.time + fireRate;
-            Instantiate(projectilePrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+            Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
             source.PlayOneShot(shoot, 5f);
-
         }
     }
-    void fireLaser()
+
+    void FireTearXRay()
+    {
+        if (Time.time > nextFire)
+        {
+            nextFire = Time.time + fireRate;
+            Instantiate(tearXRay, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+            source.PlayOneShot(shoot, 5f);
+        }
+    }
+    void FireTearShield()
+    {
+        if (Time.time > nextFire)
+        {
+            nextFire = Time.time + fireRate;
+            Instantiate(tearShield, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+            source.PlayOneShot(shoot, 5f);
+        }
+    }
+    void FireTearBounce()
+    {
+        if (Time.time > nextFire)
+        {
+            nextFire = Time.time + fireRate;
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
+                Instantiate(tearBounce, new Vector3(transform.position.x, transform.position.y + 0.02f, transform.position.z)
+                    , laserPrefabV.transform.rotation);
+                source.PlayOneShot(shoot, 5f);
+            }
+            else if (Input.GetKey(KeyCode.DownArrow))
+            {
+                Instantiate(tearBounce, new Vector3(transform.position.x, transform.position.y - 0.02f, transform.position.z)
+                    , laserPrefabV.transform.rotation);
+                source.PlayOneShot(shoot, 5f);
+            }
+            else if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                Instantiate(tearBounce, new Vector3(transform.position.x - 0.02f, transform.position.y, transform.position.z),
+                    laserPrefabH.transform.rotation);
+                source.PlayOneShot(shoot, 5f);
+            }
+
+            else if (Input.GetKey(KeyCode.RightArrow))
+            {
+                Instantiate(tearBounce, new Vector3(transform.position.x + 0.02f, transform.position.y, transform.position.z),
+                    laserPrefabH.transform.rotation);
+                source.PlayOneShot(shoot, 5f);
+            }
+            source.PlayOneShot(shoot, 5f);
+        }
+    }
+    void FireDoubleTear()
+    {
+        if (Time.time > nextFire)
+        {
+            nextFire = Time.time + fireRate / 0.8f;
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
+                Instantiate(tear, new Vector3(transform.position.x - 0.25F, transform.position.y, transform.position.z)
+                    , laserPrefabV.transform.rotation);
+                Instantiate(tear, new Vector3(transform.position.x + 0.25f, transform.position.y, transform.position.z)
+                    , laserPrefabV.transform.rotation);
+                source.PlayOneShot(shoot, 5f);
+            }
+            else if (Input.GetKey(KeyCode.DownArrow))
+            {
+                Instantiate(tear, new Vector3(transform.position.x - 0.25f, transform.position.y, transform.position.z)
+                    , laserPrefabV.transform.rotation);
+                Instantiate(tear, new Vector3(transform.position.x + 0.25f, transform.position.y, transform.position.z)
+                    , laserPrefabV.transform.rotation);
+                source.PlayOneShot(shoot, 5f);
+            }
+            else if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                Instantiate(tear, new Vector3(transform.position.x, transform.position.y + 0.25f, transform.position.z),
+                    laserPrefabH.transform.rotation);
+                Instantiate(tear, new Vector3(transform.position.x, transform.position.y - 0.25f, transform.position.z),
+                    laserPrefabH.transform.rotation);
+                source.PlayOneShot(shoot, 5f);
+            }
+
+            else if (Input.GetKey(KeyCode.RightArrow))
+            {
+                Instantiate(tear, new Vector3(transform.position.x, transform.position.y + 0.25f, transform.position.z),
+                    laserPrefabH.transform.rotation);
+                Instantiate(tear, new Vector3(transform.position.x, transform.position.y - 0.25f, transform.position.z),
+                    laserPrefabH.transform.rotation);
+                source.PlayOneShot(shoot, 5f);
+            }
+            source.PlayOneShot(shoot, 5f);
+        }
+    }
+    void FireTripleTear()
+    {
+        if (Time.time > nextFire)
+        {
+            nextFire = Time.time + fireRate / 0.6f;
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
+                Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+                Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 120)));
+                Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 240)));
+                source.PlayOneShot(shoot, 5f);
+            }
+            else if (Input.GetKey(KeyCode.DownArrow))
+            {
+                Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+                Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 120)));
+                Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 240)));
+                source.PlayOneShot(shoot, 5f);
+            }
+            else if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+                Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 120)));
+                Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 240)));
+                source.PlayOneShot(shoot, 5f);
+            }
+
+            else if (Input.GetKey(KeyCode.RightArrow))
+            {
+                Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+                Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 120)));
+                Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 240)));
+                source.PlayOneShot(shoot, 5f);
+            }
+            source.PlayOneShot(shoot, 5f);
+        }
+    }
+    void FireLaser()
     {
         if (Time.time > nextFire)
         {
             nextFire = Time.time + fireRate / 45;
-
-            //COMO COÑO RECOJO EL INPUT PARA PASARLO A UN SWITCH ?
             if (Input.GetKey(KeyCode.UpArrow))
             {
                 Instantiate(laserPrefabV, new Vector3(transform.position.x, transform.position.y + 3.5f, transform.position.z)
@@ -327,24 +459,19 @@ public class Player : MonoBehaviour
             }
             else if (Input.GetKey(KeyCode.LeftArrow))
             {
-
                 Instantiate(laserPrefabH, new Vector3(transform.position.x - 6.5f, transform.position.y, transform.position.z), laserPrefabH.transform.rotation);
                 source.PlayOneShot(shoot, 5f);
             }
 
             else if (Input.GetKey(KeyCode.RightArrow))
             {
-
                 Instantiate(laserPrefabH, new Vector3(transform.position.x + 6.5f, transform.position.y, transform.position.z), laserPrefabH.transform.rotation);
                 source.PlayOneShot(shoot, 5f);
             }
-
-
-
         }
     }
 
-    public Player getPosition()
+    public Player GetPosition()
     {
         return this;
     }
