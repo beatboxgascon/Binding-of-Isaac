@@ -30,6 +30,7 @@ public class RandomActiveObject : MonoBehaviour
     public int getCurrentSprite() { return currentSprite; }
     public void Activate()
     {
+        
         //if(currentSprite%2==0)
         //    GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().LifeUp();
         //else

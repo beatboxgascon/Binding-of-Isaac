@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
         coins = 15;
         Screen.SetResolution(1920, 1080, true);
         nextFire = 0f;
-        tipoProyectil = "triple";
+        tipoProyectil = "Xray";
         LivesText.text = "Lives: " + lives;
         SpeedText.text = "Speed: " + speed;
         DamageText.text = "Damage: " + damage;
@@ -89,10 +89,11 @@ public class Player : MonoBehaviour
             anim.SetFloat("Movimiento", axisX);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && activeObject != null)
+        if (Input.GetKeyDown(KeyCode.Space) && activeObject != null 
+            && cargaObjeto==activeObject.GetCargas())
         {
-            activeObject.Activate();
             cargaObjeto = 0;
+            activeObject.Activate();
         }
 
         if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))
@@ -316,7 +317,25 @@ public class Player : MonoBehaviour
         if (Time.time > nextFire)
         {
             nextFire = Time.time + fireRate;
-            Instantiate(tearXRay, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
+                Instantiate(tearXRay, transform.position, Quaternion.Euler(new Vector3(0, 0, 90)));
+            }
+            else if (Input.GetKey(KeyCode.DownArrow))
+            {
+                Instantiate(tearXRay, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+            }
+            else if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                Instantiate(tearXRay, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+            }
+            else if (Input.GetKey(KeyCode.RightArrow))
+            {
+                Instantiate(tearXRay, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+            }
+            
+
             source.PlayOneShot(shoot, 5f);
         }
     }
