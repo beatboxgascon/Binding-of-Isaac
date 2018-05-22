@@ -1,6 +1,11 @@
-﻿using UnityEngine;
-public class EnemyProjectile : EnemigoDisparo
-{
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class AreaTear : MonoBehaviour {
+
+    int speed;
+
     void Start()
     {
         speed = 3;
@@ -15,5 +20,13 @@ public class EnemyProjectile : EnemigoDisparo
     void OnBecameInvisible()
     {
         Destroy(gameObject);
+    }
+
+    void OnTriggerEnter2D(Collider2D coll)
+    {
+        if (coll.gameObject.tag.Contains("Enemy"))
+        {
+            Destroy(gameObject);
+        }
     }
 }

@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     public GameObject tearShield;
     public GameObject laserPrefabV;
     public GameObject laserPrefabH;
+    public GameObject areaTear;
     public Text LivesText;
     public Text SpeedText;
     public Text DamageText;
@@ -33,6 +34,7 @@ public class Player : MonoBehaviour
     private AudioSource source;
     public AudioClip shoot;
     public AudioClip hitSound;
+    private bool temporalDamage;
 
     void Awake()
     {
@@ -48,25 +50,78 @@ public class Player : MonoBehaviour
         coins = 15;
         Screen.SetResolution(1920, 1080, true);
         nextFire = 0f;
-        tipoProyectil = "Xray";
-        LivesText.text = "Lives: " + lives;
-        SpeedText.text = "Speed: " + speed;
-        DamageText.text = "Damage: " + damage;
-        CoinsText.text = "Coins: " + coins;
-        FireRateText.text = "Fire Rate: " + fireRate * 10;
-        ChargeText.text = "";
+        tipoProyectil = "normal";
+        UpdateTexts();
         invincible = false;
         anim = GetComponent<Animator>();
+        temporalDamage = false;
     }
 
     void Update()
+    {      
+        Move();
+        Fire();
+        ActiveObject(); 
+    }
+
+    void OnTriggerEnter2D(Collider2D coll)
     {
-        float axisX = 0;
-        float axisY = 0;
-        Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
-        Vector3 screenWorldPos = Camera.main.ScreenToWorldPoint(screenPos);
+        if (coll.gameObject.tag == "enemyProjectile" || coll.gameObject.tag == "EnemyF" ||
+            coll.gameObject.tag == "EnemyF_Projectile")
+            LoseLife();
+
+        if (coll.gameObject.tag == "Trophy")
+        {
+            SceneManager.LoadScene("Victoria");
+        }
+        if (coll.gameObject.tag == "Moneda")
+        {
+            updateCoins(1);
+            Destroy(coll.gameObject);
+        }
+
+    }
+
+    private void Fire()
+    {
+        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))
+        {
+            anim.SetFloat("Movimiento", 0.0f);
+            anim.SetFloat("MovimientoY", 0.0f);
+
+            if (Input.GetKey(KeyCode.RightArrow))
+                anim.SetFloat("Movimiento", 0.5f);
+            if (Input.GetKey(KeyCode.LeftArrow))
+                anim.SetFloat("Movimiento", -0.5f);
+            if (Input.GetKey(KeyCode.UpArrow))
+                anim.SetFloat("MovimientoY", 0.5f);
+            if (Input.GetKey(KeyCode.DownArrow))
+                anim.SetFloat("MovimientoY", -0.5f);
+
+            FireProjectile();
+
+        }
+    }
+
+    private void ActiveObject()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && activeObject != null
+                   && cargaObjeto == activeObject.GetCargas())
+        {
+            cargaObjeto = 0;
+            UpdateTexts();
+            activeObject.Activate();
+        }
+    }
+
+    private void Move()
+    {
         anim.SetFloat("Movimiento", 0.0f);
         anim.SetFloat("MovimientoY", 0.0f);
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
+        Vector3 screenWorldPos = Camera.main.ScreenToWorldPoint(screenPos);
+        float axisX = 0;
+        float axisY = 0;
 
         if (Input.GetKey("w"))
         {
@@ -89,58 +144,6 @@ public class Player : MonoBehaviour
             anim.SetFloat("Movimiento", axisX);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && activeObject != null 
-            && cargaObjeto==activeObject.GetCargas())
-        {
-            cargaObjeto = 0;
-            ChargeText.text = "Charge: " + cargaObjeto;
-            activeObject.Activate();
-        }
-
-        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))
-        {
-            anim.SetFloat("Movimiento", 0.0f);
-            anim.SetFloat("MovimientoY", 0.0f);
-
-            if (Input.GetKey(KeyCode.RightArrow))
-                anim.SetFloat("Movimiento", 0.5f);
-            if (Input.GetKey(KeyCode.LeftArrow))
-                anim.SetFloat("Movimiento", -0.5f);
-            if (Input.GetKey(KeyCode.UpArrow))
-                anim.SetFloat("MovimientoY", 0.5f);
-            if (Input.GetKey(KeyCode.DownArrow))
-                anim.SetFloat("MovimientoY", -0.5f);
-
-            if (tipoProyectil == "laser")
-            {
-                FireLaser();
-            }
-            else if (tipoProyectil == "normal")
-            {
-                FireTear();
-            }
-            else if (tipoProyectil == "doble")
-            {
-                FireDoubleTear();
-            }
-            else if (tipoProyectil == "triple")
-            {
-                FireTripleTear();
-            }
-            else if (tipoProyectil == "Xray")
-            {
-                FireTearXRay();
-            }
-            else if (tipoProyectil == "escudo")
-            {
-                FireTearShield();
-            }
-            else if (tipoProyectil == "rebote")
-            {
-                FireTearBounce();
-            }
-        }
-
         if (screenPos.x <= 0)
             transform.position = new Vector3(screenWorldPos.x + 0.05f, screenWorldPos.y);
         else if (screenPos.x >= Screen.width)
@@ -149,22 +152,54 @@ public class Player : MonoBehaviour
             transform.Translate(new Vector3(axisX, axisY) * Time.deltaTime * speed);
     }
 
-    void OnTriggerEnter2D(Collider2D coll)
+    private void FireProjectile()
     {
-        if (coll.gameObject.tag == "enemyProjectile" || coll.gameObject.tag == "EnemyF" ||
-            coll.gameObject.tag == "EnemyF_Projectile")
-            LoseLife();
-
-        if (coll.gameObject.tag == "Trophy")
+        if (tipoProyectil == "laser")
         {
-            SceneManager.LoadScene("Victoria");
+            FireLaser();
         }
-        if (coll.gameObject.tag == "Moneda")
+        else if (tipoProyectil == "normal")
         {
-            updateCoins(1);
-            Destroy(coll.gameObject);
+            FireTear();
         }
+        else if (tipoProyectil == "doble")
+        {
+            FireDoubleTear();
+        }
+        else if (tipoProyectil == "triple")
+        {
+            FireTripleTear();
+        }
+        else if (tipoProyectil == "Xray")
+        {
+            FireTearXRay();
+        }
+        else if (tipoProyectil == "escudo")
+        {
+            FireTearShield();
+        }
+        else if (tipoProyectil == "rebote")
+        {
+            FireTearBounce();
+        }
+    }
 
+    private void UpdateTexts()
+    {
+        LivesText.text = "Lives: " + lives;
+        SpeedText.text = "Speed: " + speed;
+        DamageText.text = "Damage: " + damage;
+        CoinsText.text = "Coins: " + coins;
+        FireRateText.text = "Fire Rate: " + fireRate * 10;
+        if (activeObject == null)
+        {
+            ChargeText.text = "";
+        }
+        else
+        {
+            ChargeText.text = "Charge: " + cargaObjeto;
+        }
+        
     }
 
     private void OnCollisionStay2D(Collision2D collision)
@@ -208,6 +243,14 @@ public class Player : MonoBehaviour
             UpdateStats(coll.gameObject.GetComponent<RandomObject>());
             updateCoins(-15);
         }
+        else if (coll.gameObject.tag == "ObjetoActivoTienda" && coins >= 15)
+        {
+            activeObject = coll.gameObject.GetComponent<RandomActiveObject>();
+            cargaObjeto = activeObject.GetCargas();
+            coll.gameObject.SetActive(false);
+            UpdateTexts();
+            updateCoins(-15);
+        }
         else if (coll.gameObject.tag == "CorazonTienda" && coins >= 5)
         {
             Destroy(coll.gameObject);
@@ -216,11 +259,23 @@ public class Player : MonoBehaviour
         }
         else if (coll.gameObject.tag == "ObjetoActivo")
         {
-
             activeObject = coll.gameObject.GetComponent<RandomActiveObject>();
             cargaObjeto = activeObject.GetCargas();
             coll.gameObject.SetActive(false);
-            ChargeText.text = "Charge: " + cargaObjeto;
+            UpdateTexts();
+        }
+        else if (coll.gameObject.tag == "ObjetoLagrimaTienda")
+        {
+            tipoProyectil = coll.gameObject.GetComponent<RandomTearObject>().getTear();
+            Destroy(coll.gameObject);
+            UpdateTexts();
+            updateCoins(-15);
+        }
+        else if (coll.gameObject.tag == "ObjetoLagrima")
+        {
+            tipoProyectil = coll.gameObject.GetComponent<RandomTearObject>().getTear();
+            Destroy(coll.gameObject);
+            UpdateTexts();
         }
     }
 
@@ -233,7 +288,7 @@ public class Player : MonoBehaviour
     {
         if (cargaObjeto <= activeObject.GetCargas() && carga > 0)
             cargaObjeto += carga;
-        ChargeText.text = "Charge: " + cargaObjeto;
+        UpdateTexts();
     }
 
     public Room GetRoom() { return room.GetComponent<Room>(); }
@@ -241,7 +296,7 @@ public class Player : MonoBehaviour
     public void updateCoins(int price)
     {
         coins += price;
-        CoinsText.text = "Coins: " + coins;
+        UpdateTexts();
     }
 
     public bool hasActiveObject()
@@ -249,10 +304,30 @@ public class Player : MonoBehaviour
         return activeObject != null;
     }
 
+    public void TemporalDamage()
+    {
+        temporalDamage = true;
+        damage += 5;
+        UpdateTexts();
+    }
+
     public void ChangeRoom(float camaraX, float camaraY, float personajeX, float personajeY)
     {
         camara.transform.position = new Vector3(camara.transform.position.x + camaraX, camara.transform.position.y + camaraY, camara.transform.position.z);
         transform.position = new Vector3(transform.position.x + personajeX, transform.position.y + personajeY, transform.position.z);
+        if (temporalDamage)
+        {
+            damage -= 5;
+            UpdateTexts();
+        }
+    }
+
+    public void SetInmunity()
+    {
+        invincible = true;
+        GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.5f);
+        Invoke("resetInmunity", 7F);
+        
     }
 
     public void UpdateStats(RandomObject c)
@@ -260,9 +335,7 @@ public class Player : MonoBehaviour
         damage += c.GetObjeto().Damage;
         speed += c.GetObjeto().Speed;
         fireRate -= c.GetObjeto().FireRate * 0.1f;
-        DamageText.text = "Damage: " + damage;
-        SpeedText.text = "Speed: " + speed;
-        FireRateText.text = "Fire Rate: " + fireRate * 10;
+        UpdateTexts();
     }
 
     public void LifeUp()
@@ -270,7 +343,7 @@ public class Player : MonoBehaviour
         if (lives < 9)
         {
             lives++;
-            LivesText.text = "Lives: " + lives;
+            UpdateTexts();
         }
     }
 
@@ -294,13 +367,20 @@ public class Player : MonoBehaviour
         {
             SceneManager.LoadScene("Derrota");
         }
-        LivesText.text = "Lives: " + lives;
+        UpdateTexts();
     }
 
     void resetInvulnerability()
     {
         invincible = false;
         anim.SetFloat("Inmune", 0);
+
+    }
+
+    void resetInmunity()
+    {
+        invincible = false;
+        GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
     }
 
     void FireTear()
@@ -338,7 +418,6 @@ public class Player : MonoBehaviour
                 Instantiate(tearXRay, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
             }
             
-
             source.PlayOneShot(shoot, 5f);
         }
     }
@@ -351,6 +430,26 @@ public class Player : MonoBehaviour
             source.PlayOneShot(shoot, 5f);
         }
     }
+
+    public void FireArea()
+    {
+        Instantiate(areaTear, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+        Instantiate(areaTear, transform.position, Quaternion.Euler(new Vector3(0, 0, 30)));
+        Instantiate(areaTear, transform.position, Quaternion.Euler(new Vector3(0, 0, 60)));
+        Instantiate(areaTear, transform.position, Quaternion.Euler(new Vector3(0, 0, 90)));
+        Instantiate(areaTear, transform.position, Quaternion.Euler(new Vector3(0, 0, 120)));
+        Instantiate(areaTear, transform.position, Quaternion.Euler(new Vector3(0, 0, 150)));
+        Instantiate(areaTear, transform.position, Quaternion.Euler(new Vector3(0, 0, 180)));
+        Instantiate(areaTear, transform.position, Quaternion.Euler(new Vector3(0, 0, 210)));
+        Instantiate(areaTear, transform.position, Quaternion.Euler(new Vector3(0, 0, 240)));
+        Instantiate(areaTear, transform.position, Quaternion.Euler(new Vector3(0, 0, 270)));
+        Instantiate(areaTear, transform.position, Quaternion.Euler(new Vector3(0, 0, 300)));
+        Instantiate(areaTear, transform.position, Quaternion.Euler(new Vector3(0, 0, 330)));
+        Instantiate(areaTear, transform.position, Quaternion.Euler(new Vector3(0, 0, 360)));
+        source.PlayOneShot(shoot, 5f);
+
+    }
+
     void FireTearBounce()
     {
         if (Time.time > nextFire)

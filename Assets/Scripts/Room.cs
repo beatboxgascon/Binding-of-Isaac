@@ -57,11 +57,7 @@ public class Room : MonoBehaviour
             GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().SetRoom(this.gameObject);
             setEnemiesState(true);
         }
-        //if (player.CompareTag("Projectile"))
-        //{
-        //    Destroy(player.gameObject);
-        //    player.transform.position.x
-        //}
+        
     }
     public void RoomDamage()
     {
