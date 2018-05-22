@@ -93,6 +93,7 @@ public class Player : MonoBehaviour
             && cargaObjeto==activeObject.GetCargas())
         {
             cargaObjeto = 0;
+            ChargeText.text = "Charge: " + cargaObjeto;
             activeObject.Activate();
         }
 

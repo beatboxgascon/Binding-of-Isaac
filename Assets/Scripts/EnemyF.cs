@@ -8,14 +8,16 @@ public class EnemyF : Enemigo
     }
     void Start()
     {
-        speed = 4f;
+        speed = 1f;
         health = 20f;
         jugador = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         source.Play(0);
     }
     void Update()
     {
-        transform.position += (jugador.transform.position - transform.position).normalized * speed * Time.deltaTime;
+        transform.position = Vector2.MoveTowards(transform.position, jugador.transform.position,
+                                                  speed * Time.deltaTime);
+        //transform.position += (jugador.transform.position - transform.position).normalized * speed * Time.deltaTime;
         Die();
     }
     protected void OnTriggerEnter2D(Collider2D coll)
