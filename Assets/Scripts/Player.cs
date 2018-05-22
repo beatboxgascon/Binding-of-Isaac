@@ -320,15 +320,17 @@ public class Player : MonoBehaviour
 
             if (Input.GetKey(KeyCode.UpArrow))
             {
+                tearXRay.transform.Rotate(Vector3.forward);
                 Instantiate(tearXRay, transform.position, Quaternion.Euler(new Vector3(0, 0, 90)));
             }
             else if (Input.GetKey(KeyCode.DownArrow))
             {
-                Instantiate(tearXRay, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+                Instantiate(tearXRay, transform.position, Quaternion.Euler(new Vector3(0, 0, -90)));
             }
             else if (Input.GetKey(KeyCode.LeftArrow))
             {
-                Instantiate(tearXRay, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+                
+                Instantiate(tearXRay, transform.position, Quaternion.Euler(new Vector3(0, 0, 180)));
             }
             else if (Input.GetKey(KeyCode.RightArrow))
             {
