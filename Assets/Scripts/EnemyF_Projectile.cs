@@ -23,13 +23,6 @@ class EnemyF_Projectile : EnemigoDisparo
         Die();
         FireRocket();
     }
-    void OnTriggerEnter2D(Collider2D coll)
-    {
-        if (coll.gameObject.tag == "Projectile")
-        {
-            health -= jugador.GetDamage();
-        }
-    }
     void FireRocket()
     {
         if (Time.time > nextFire)

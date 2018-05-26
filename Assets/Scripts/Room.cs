@@ -9,8 +9,8 @@ public class Room : MonoBehaviour
     bool addedCharge;
     void Start()
     {
-        setObjectState(false);
-        setEnemiesState(false);
+        SetObjectState(false);
+        SetEnemiesState(false);
         addedCharge = false;
     }
     void Update()
@@ -18,12 +18,12 @@ public class Room : MonoBehaviour
         if (AreEnemiesLeft() && !addedCharge)
         {
             addedCharge = true;
-            if (GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().hasActiveObject())
-                GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().updateCharges(1);
-            setObjectState(true);
+            //if (GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().hasActiveObject())
+            //    GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().updateCharges(1);
+            SetObjectState(true);
         }
     }
-    public void setObjectState(bool active)
+    public void SetObjectState(bool active)
     {
         foreach (var item in objetos)
         {
@@ -40,7 +40,17 @@ public class Room : MonoBehaviour
             }
         }
     }
-    public void setEnemiesState(bool active)
+
+    void OnCollisionEnter2D(Collision2D coll)
+    {
+        //if (coll.gameObject.tag == "TearBounce")
+        //{
+        //    coll.gameObject.GetComponent<TearBounce>().Rotate(135);
+        //    print("rebotasion");
+        //}
+    }
+
+    public void SetEnemiesState(bool active)
     {
         foreach (var item in enemigosHabitacion)
         {
@@ -55,9 +65,10 @@ public class Room : MonoBehaviour
         if (player.CompareTag("Player"))
         {
             GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().SetRoom(this.gameObject);
-            setEnemiesState(true);
+            SetEnemiesState(true);
         }
-        
+
+
     }
     public void RoomDamage()
     {

@@ -17,14 +17,7 @@ public class EnemyF : Enemigo
     {
         transform.position = Vector2.MoveTowards(transform.position, jugador.transform.position,
                                                   speed * Time.deltaTime);
-        //transform.position += (jugador.transform.position - transform.position).normalized * speed * Time.deltaTime;
         Die();
     }
-    protected void OnTriggerEnter2D(Collider2D coll)
-    {
-        if (coll.gameObject.tag == "Projectile")
-        {
-            health -= jugador.GetDamage();
-        }
-    }
+
 }

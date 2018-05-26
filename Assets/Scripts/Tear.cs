@@ -36,13 +36,7 @@ public class Tear : MonoBehaviour
 
         transform.Translate(new Vector3(direccionX, direccionY) * Time.deltaTime * speed);
     }
-    void OnTriggerEnter2D(Collider2D coll)
-    {
-        if (coll.gameObject.tag.Contains("Enemy"))
-        {
-            Destroy(gameObject);
-        }
-    }
+
     void OnBecameInvisible()
     {
         Destroy(gameObject);

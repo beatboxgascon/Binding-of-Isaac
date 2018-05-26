@@ -29,7 +29,7 @@ public class Player : MonoBehaviour
     public Text CoinsText;
     public Text ChargeText;
     private Animator anim;
-    public GameObject camara;
+    private GameObject camara;
     public GameObject room;
     private AudioSource source;
     public AudioClip shoot;
@@ -42,8 +42,9 @@ public class Player : MonoBehaviour
     }
     void Start()
     {
+        camara = GameObject.FindGameObjectWithTag("MainCamera");
         lives = 5;
-        speed = 5f;
+        speed = 10f;
         fireRate = 0.7f;
         damage = 3f;
         cargaObjeto = 0;
@@ -186,6 +187,7 @@ public class Player : MonoBehaviour
 
     private void UpdateTexts()
     {
+
         LivesText.text = "Lives: " + lives;
         SpeedText.text = "Speed: " + speed;
         DamageText.text = "Damage: " + damage;
@@ -199,7 +201,7 @@ public class Player : MonoBehaviour
         {
             ChargeText.text = "Charge: " + cargaObjeto;
         }
-        
+
     }
 
     private void OnCollisionStay2D(Collision2D collision)

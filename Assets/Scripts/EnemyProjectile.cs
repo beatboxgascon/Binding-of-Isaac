@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
-public class EnemyProjectile : EnemigoDisparo
+public class EnemyProjectile : MonoBehaviour
 {
+    private float speed;
     void Start()
     {
         speed = 3;

@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 public class AnotherBoss : EnemigoDisparo
 {
-    public Transform target;
     public GameObject projectilePrefab;
     int angle1, angle2, angle3;
 
@@ -12,7 +11,7 @@ public class AnotherBoss : EnemigoDisparo
     void Start()
     {
         nextFire = 0f;
-        health = 40f;
+        health = 30f;
         jugador = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         /*
          * --Version con 2 proyectiles de misma direccion pero sentido opuesto.
