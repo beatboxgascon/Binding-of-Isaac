@@ -15,8 +15,8 @@ public class EnemyF : Enemigo
     }
     void Update()
     {
-        transform.position = Vector2.MoveTowards(transform.position, jugador.transform.position,
-                                                  speed * Time.deltaTime);
+        transform.position = 
+            Vector2.MoveTowards(transform.position, jugador.transform.position, speed * Time.deltaTime);
         Die();
     }
 

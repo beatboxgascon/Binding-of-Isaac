@@ -14,7 +14,7 @@ public class Boss : EnemigoDisparo
     void Start()
     {
         speed = 1.5f;
-        health = 500f;
+        health = 250f;
         //  healthText.text = "Enemy Health: " + health;
         nextFire = 0f;
         nextRoar = 0f;

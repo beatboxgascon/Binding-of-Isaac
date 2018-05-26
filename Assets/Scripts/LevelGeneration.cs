@@ -198,48 +198,48 @@ public class LevelGeneration : MonoBehaviour
                 {
                     if (room.doorBot)
                     {
-                        Instantiate(mapper.getPreBossRoom(0), drawPos, Quaternion.identity);
-                        Instantiate(mapper.getBossRoom(0), new Vector2(drawPos.x, drawPos.y + 9), Quaternion.identity);
+                        Instantiate(mapper.GetPreBossRoom(0), drawPos, Quaternion.identity);
+                        Instantiate(mapper.GetBossRoom(0), new Vector2(drawPos.x, drawPos.y + 9), Quaternion.identity);
                     }
                     else if (room.doorLeft)
                     {
-                        Instantiate(mapper.getPreBossRoom(2), drawPos, Quaternion.identity);
-                        Instantiate(mapper.getBossRoom(2), new Vector2(drawPos.x + 15, drawPos.y), Quaternion.identity);
+                        Instantiate(mapper.GetPreBossRoom(2), drawPos, Quaternion.identity);
+                        Instantiate(mapper.GetBossRoom(2), new Vector2(drawPos.x + 15, drawPos.y), Quaternion.identity);
 
                     }
                     else if (room.doorRight)
                     {
-                        Instantiate(mapper.getPreBossRoom(3), drawPos, Quaternion.identity);
-                        Instantiate(mapper.getBossRoom(3), new Vector2(drawPos.x - 15, drawPos.y), Quaternion.identity);
+                        Instantiate(mapper.GetPreBossRoom(3), drawPos, Quaternion.identity);
+                        Instantiate(mapper.GetBossRoom(3), new Vector2(drawPos.x - 15, drawPos.y), Quaternion.identity);
                     }
                     else if (room.doorTop)
                     {
-                        Instantiate(mapper.getPreBossRoom(1), drawPos, Quaternion.identity);
-                        Instantiate(mapper.getBossRoom(1), new Vector2(drawPos.x, drawPos.y-9), Quaternion.identity);
+                        Instantiate(mapper.GetPreBossRoom(1), drawPos, Quaternion.identity);
+                        Instantiate(mapper.GetBossRoom(1), new Vector2(drawPos.x, drawPos.y-9), Quaternion.identity);
                     }
 
                 } else if (room.type == 4)
                 {
                     if (room.doorBot)
                     {
-                        Instantiate(mapper.getPreShopRoom(0), drawPos, Quaternion.identity);
-                        Instantiate(mapper.getShopRoom(0), new Vector2(drawPos.x, drawPos.y + 9), Quaternion.identity);
+                        Instantiate(mapper.GetPreShopRoom(0), drawPos, Quaternion.identity);
+                        Instantiate(mapper.GetShopRoom(0), new Vector2(drawPos.x, drawPos.y + 9), Quaternion.identity);
                     }
                     else if (room.doorLeft)
                     {
-                        Instantiate(mapper.getPreShopRoom(2), drawPos, Quaternion.identity);
-                        Instantiate(mapper.getShopRoom(2), new Vector2(drawPos.x + 15, drawPos.y), Quaternion.identity);
+                        Instantiate(mapper.GetPreShopRoom(2), drawPos, Quaternion.identity);
+                        Instantiate(mapper.GetShopRoom(2), new Vector2(drawPos.x + 15, drawPos.y), Quaternion.identity);
 
                     }
                     else if (room.doorRight)
                     {
-                        Instantiate(mapper.getPreShopRoom(3), drawPos, Quaternion.identity);
-                        Instantiate(mapper.getShopRoom(3), new Vector2(drawPos.x - 15, drawPos.y), Quaternion.identity);
+                        Instantiate(mapper.GetPreShopRoom(3), drawPos, Quaternion.identity);
+                        Instantiate(mapper.GetShopRoom(3), new Vector2(drawPos.x - 15, drawPos.y), Quaternion.identity);
                     }
                     else if (room.doorTop)
                     {
-                        Instantiate(mapper.getPreShopRoom(1), drawPos, Quaternion.identity);
-                        Instantiate(mapper.getShopRoom(1), new Vector2(drawPos.x, drawPos.y - 9), Quaternion.identity);
+                        Instantiate(mapper.GetPreShopRoom(1), drawPos, Quaternion.identity);
+                        Instantiate(mapper.GetShopRoom(1), new Vector2(drawPos.x, drawPos.y - 9), Quaternion.identity);
                     }
 
                 }
@@ -261,7 +261,6 @@ public class LevelGeneration : MonoBehaviour
             {
                 if (rooms[x, y] != null)
                 {
-                    //Vector2 gridPosition = new Vector2(x, y);
                     if (y - 1 < 0)
                     { //check above
                         rooms[x, y].doorBot = false;

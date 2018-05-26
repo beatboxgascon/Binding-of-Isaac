@@ -19,7 +19,8 @@ class EnemyF_Projectile : EnemigoDisparo
     }
     void Update()
     {
-        transform.position += (jugador.transform.position - transform.position).normalized * speed * Time.deltaTime;
+        transform.position =
+            Vector2.MoveTowards(transform.position, jugador.transform.position, speed * Time.deltaTime);
         Die();
         FireRocket();
     }

@@ -13,18 +13,15 @@ public class MapSpriteSelector : MonoBehaviour
             preBossD, preBossU, preBossR, preBossL,
             preShopD, preShopU, preShopR, preShopL;
     public bool up, down, left, right;
-    public int type; // 0: normal, 1: enter, 3:boss
+    public int type; // 0: normal, 3:boss, 4: shop
     public Color normalColor, enterColor;
-    Color mainColor;
-    GameObject rend;
-
 
     void Start()
     {
     }
     GameObject PickSprite(int type)
-    { //picks correct sprite based on the four door bools
-        GameObject prueba;
+    { //Selecciona el gameobject adecuado dependiendo de las puertas que tiene
+        GameObject habitacion;
         if (up)
         {
             if (down)
@@ -33,20 +30,20 @@ public class MapSpriteSelector : MonoBehaviour
                 {
                     if (left)
                     {
-                        prueba = spUDRL;
+                        habitacion = spUDRL;
                     }
                     else
                     {
-                        prueba = spDRU;
+                        habitacion = spDRU;
                     }
                 }
                 else if (left)
                 {
-                    prueba = spULD;
+                    habitacion = spULD;
                 }
                 else
                 {
-                    prueba = spUD;
+                    habitacion = spUD;
                 }
             }
             else
@@ -55,34 +52,23 @@ public class MapSpriteSelector : MonoBehaviour
                 {
                     if (left)
                     {
-                        prueba = spRUL;
+                        habitacion = spRUL;
                     }
                     else
                     {
-                        prueba = spUR;
+                        habitacion = spUR;
                     }
                 }
                 else if (left)
                 {
-                    prueba = spUL;
+                    habitacion = spUL;
                 }
                 else
                 {
-                    if (type == 3)
-                    {
-                        prueba = bossU;
-                    }
-                    else if (type == 4)
-                    {
-                        prueba = shopU;
-                    }
-                    else
-                    {
-                        prueba = spU;
-                    }
+                    habitacion = spU;
                 }
             }
-            return prueba;
+            return habitacion;
         }
         if (down)
         {
@@ -90,74 +76,40 @@ public class MapSpriteSelector : MonoBehaviour
             {
                 if (left)
                 {
-                    prueba = spLDR;
+                    habitacion = spLDR;
                 }
                 else
                 {
-                    prueba = spDR;
+                    habitacion = spDR;
                 }
             }
             else if (left)
             {
-                prueba = spDL;
+                habitacion = spDL;
             }
             else
             {
-                if (type == 3)
-                {
-                    prueba = bossD;
-                }
-                else if (type == 4)
-                {
-                    prueba = shopD;
-                }
-                else
-                {
-                    prueba = spD;
-                }
-                
+                habitacion = spD;
             }
-            return prueba;
+            return habitacion;
         }
         if (right)
         {
             if (left)
             {
-                prueba = spRL;
+                habitacion = spRL;
             }
             else
             {
-                if (type == 3)
-                {
-                    prueba = bossR;
-                }
-                else if (type == 4)
-                {
-                    prueba = shopR;
-                }
-                else
-                {
-                    prueba = spR;
-                }
+                habitacion = spR;
             }
         }
         else
         {
-            if (type == 3)
-            {
-                prueba = bossL;
-            }
-            else if (type == 4)
-            {
-                prueba = shopL;
-            }
-            else
-            {
-                prueba = spL;
-            }
+            habitacion = spL;
         }
 
-        return prueba;
+        return habitacion;
     }
 
     public GameObject getRoom(int type)
@@ -165,7 +117,7 @@ public class MapSpriteSelector : MonoBehaviour
         return PickSprite(type);
     }
 
-    public GameObject getBossRoom(int type)
+    public GameObject GetBossRoom(int type)
     {
         GameObject room=null;
         switch (type)
@@ -186,7 +138,7 @@ public class MapSpriteSelector : MonoBehaviour
 
         return room;
     }
-    public GameObject getPreBossRoom(int type)
+    public GameObject GetPreBossRoom(int type)
     {
         GameObject room = null;
         switch (type)
@@ -208,7 +160,7 @@ public class MapSpriteSelector : MonoBehaviour
         return room;
     }
 
-    public GameObject getShopRoom(int type)
+    public GameObject GetShopRoom(int type)
     {
         GameObject room = null;
         switch (type)
@@ -229,7 +181,7 @@ public class MapSpriteSelector : MonoBehaviour
 
         return room;
     }
-    public GameObject getPreShopRoom(int type)
+    public GameObject GetPreShopRoom(int type)
     {
         GameObject room = null;
         switch (type)

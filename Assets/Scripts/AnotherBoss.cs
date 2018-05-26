@@ -13,12 +13,7 @@ public class AnotherBoss : EnemigoDisparo
         nextFire = 0f;
         health = 30f;
         jugador = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-        /*
-         * --Version con 2 proyectiles de misma direccion pero sentido opuesto.
-         * 
-            angle1 = 0;
-            angle2 = 180;
-        */
+        
         angle1 = 0;
         angle2 = 120;
         angle3 = 240;
@@ -37,22 +32,7 @@ public class AnotherBoss : EnemigoDisparo
         {
             source.PlayOneShot(shoot, 5f);
             nextFire = Time.time + 1f;
-            /*
-             * --Version con 2 proyectiles con misma direccion pero sentido opuesto.
-             * 
-            Instantiate(projectilePrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, angle1)));
-            Instantiate(projectilePrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, angle2)));
-            if (angle1 >= 360)
-            {
-                angle1 = 0;
-            }
-            else if(angle2 >= 360)
-            {
-                angle2 = 0;
-            }
-            angle1 += 15;
-            angle2 += 15;
-            */
+            
             Instantiate(projectilePrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, angle1)));
             Instantiate(projectilePrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, angle2)));
             Instantiate(projectilePrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, angle3)));

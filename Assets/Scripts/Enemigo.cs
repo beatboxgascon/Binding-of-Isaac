@@ -24,17 +24,6 @@ public class Enemigo : MonoBehaviour
             Destroy(gameObject);
     }
 
-    //void OnCollisionEnter2D(Collision2D coll)
-    //{
-    //    if (coll.gameObject.tag=="Projectile")
-    //    {
-    //        GetComponent<SpriteRenderer>().color = new Color(1f, 0.1f, 0.1f, 1f);
-    //        Invoke("Damage", 5F);
-    //        doDamage(jugador.GetDamage());
-    //        Destroy(coll.gameObject);
-    //    }
-    //}
-
     void OnTriggerEnter2D(Collider2D coll)
     {
         if (coll.gameObject.tag=="Projectile")

@@ -51,7 +51,7 @@ public class Player : MonoBehaviour
         coins = 15;
         Screen.SetResolution(1920, 1080, true);
         nextFire = 0f;
-        tipoProyectil = "normal";
+        tipoProyectil = "doble";
         UpdateTexts();
         invincible = false;
         anim = GetComponent<Animator>();
