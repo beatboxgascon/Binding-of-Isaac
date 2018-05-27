@@ -41,8 +41,8 @@ public class Musica : MonoBehaviour
 
     bool esEscena()
     {
-        return ((SceneManager.GetActiveScene() != SceneManager.GetSceneByBuildIndex(5)) &&
-        (SceneManager.GetActiveScene() != SceneManager.GetSceneByBuildIndex(6)) &&
-        (SceneManager.GetActiveScene() != SceneManager.GetSceneByBuildIndex(0)));
+        return ((SceneManager.GetActiveScene() != SceneManager.GetSceneByName("MainMenu")) &&
+        (SceneManager.GetActiveScene() != SceneManager.GetSceneByName("Victoria")) &&
+        (SceneManager.GetActiveScene() != SceneManager.GetSceneByName("Derrota")));
     }
 }

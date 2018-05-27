@@ -69,7 +69,7 @@ public class Room : MonoBehaviour
         {
             if (item != null)
             {
-                item.GetComponent<Enemigo>().doDamage(50f);
+                item.GetComponent<Enemigo>().DoDamage(50f);
             }
         }
     }
@@ -86,16 +86,4 @@ public class Room : MonoBehaviour
         return enemigosHabitacion.Count == muertos;
     }
 
-    public void FirstRoom()
-    {
-        foreach (var item in enemigosHabitacion)
-        {
-            if (item != null)
-            {
-                print("AAAAAAA");
-                item.SetActive(true);
-                item.SetActive(false);
-            }
-        }
-    }
 }

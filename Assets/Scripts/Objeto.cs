@@ -10,7 +10,7 @@ namespace Assets.Scripts
         public Objeto(int posicion)
         {
             Speed = 0;
-            FireRate = 1;
+            FireRate = 0;
             Damage = 0;
             int i = 0;
             StreamReader input = new StreamReader("objetos.txt");
@@ -25,6 +25,7 @@ namespace Assets.Scripts
                     FireRate = Convert.ToSingle(stats[1]);
                     Damage = Convert.ToSingle(stats[2]);
                 }
+                i++;
             }
             while (linea != null);
             input.Close();

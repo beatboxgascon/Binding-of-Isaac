@@ -8,16 +8,16 @@ public class LevelGeneration : MonoBehaviour
     GeneratedRoom[,] rooms;
     List<Vector2> takenPositions = new List<Vector2>();
     int gridSizeX, gridSizeY, numberOfRooms = 15;
-    bool bossRoom=false, shopRoom=false;
+    bool bossRoom = false, shopRoom = false;
     public GameObject roomWhiteObj;
     void Start()
     {
         // Comprueba que el número de habitaciones no sea mayor que el número de celdas disponibles
         if (numberOfRooms >= (worldSize.x * 2) * (worldSize.y * 2))
-        { 
+        {
             numberOfRooms = Mathf.RoundToInt((worldSize.x * 2) * (worldSize.y * 2));
         }
-        gridSizeX = Mathf.RoundToInt(worldSize.x); 
+        gridSizeX = Mathf.RoundToInt(worldSize.x);
         gridSizeY = Mathf.RoundToInt(worldSize.y);
         CreateRooms(); //Coloca las habitaciones de forma aleatoria
         SetRoomDoors(); //Coloca las puertas para conectarlas a las habitaciones adyacentes
@@ -26,26 +26,34 @@ public class LevelGeneration : MonoBehaviour
     }
     void CreateRooms()
     {
-        
+
         rooms = new GeneratedRoom[gridSizeX * 2, gridSizeY * 2];
-        rooms[gridSizeX, gridSizeY] = new GeneratedRoom(Vector2.zero, 1); //Crea la primera habitación en el centro del mapa
-        takenPositions.Insert(0, Vector2.zero); //Pone esa posición como ocupada
+        rooms[gridSizeX, gridSizeY] = new GeneratedRoom(Vector2.zero, 1); //Crea la primera habitación en el centro del mapa y sus alrededores
+        rooms[gridSizeX + 1, gridSizeY] = new GeneratedRoom(Vector2.right, 0);
+        rooms[gridSizeX - 1, gridSizeY] = new GeneratedRoom(Vector2.left, 0);
+        rooms[gridSizeX, gridSizeY + 1] = new GeneratedRoom(Vector2.up, 0);
+        rooms[gridSizeX, gridSizeY - 1] = new GeneratedRoom(Vector2.down, 0);
+        takenPositions.Insert(0, Vector2.zero); //Pone esas posiciones como ocupadas
+        takenPositions.Insert(1, Vector2.right);
+        takenPositions.Insert(2, Vector2.left);
+        takenPositions.Insert(3, Vector2.up);
+        takenPositions.Insert(4, Vector2.down);
         Vector2 checkPos = Vector2.zero;
-        
+
         //magic numbers
         float randomCompare = 0.2f, randomCompareStart = 0.2f, randomCompareEnd = 0.01f;
-        
+
         //Añadir habitaciones
         for (int i = 0; i < numberOfRooms - 1; i++)
         {
             //Cuanto más avancemos en el bucle, menos probabilidades de que se ramifiquen las habitaciones
             float randomPerc = ((float)i) / (((float)numberOfRooms - 1));
-            
+
             randomCompare = Mathf.Lerp(randomCompareStart, randomCompareEnd, randomPerc);
-           
+
             //Selecciona una posición
             checkPos = NewPosition();
-            
+
             //En caso de que tenga más de una habitación adyacente y RandomCompare sea mayor a un número entre 0 y 1
             //Intentará ramificarse
             if (NumberOfNeighbors(checkPos, takenPositions) > 1 && Random.value > randomCompare)
@@ -60,13 +68,13 @@ public class LevelGeneration : MonoBehaviour
                 if (iterations >= 50)
                     print("error: could not create with fewer neighbors than : " + NumberOfNeighbors(checkPos, takenPositions));
             }
-            
+
             //Añade las posiciones a la habitación y añade a la lista de posiciones ocupadas
             rooms[(int)checkPos.x + gridSizeX, (int)checkPos.y + gridSizeY] = new GeneratedRoom(checkPos, 0);
             takenPositions.Insert(0, checkPos);
         }
     }
-    
+
     //Una posición es válida cuando una es adyacente a una habitación que ya existe
     Vector2 NewPosition()
     {
@@ -75,7 +83,7 @@ public class LevelGeneration : MonoBehaviour
         do
         {
             // Selecciona una habitación aleatoria
-            int index = Mathf.RoundToInt(Random.value * (takenPositions.Count - 1)); 
+            int index = Mathf.RoundToInt(Random.value * (takenPositions.Count - 1));
             x = (int)takenPositions[index].x;
             y = (int)takenPositions[index].y;
 
@@ -111,14 +119,14 @@ public class LevelGeneration : MonoBehaviour
     }
     //Similar al anterior, con ligeros cambios
     Vector2 SelectiveNewPosition()
-    { 
+    {
         int index = 0, inc = 0;
         int x = 0, y = 0;
         Vector2 checkingPos = Vector2.zero;
         do
         {
             inc = 0;
-            
+
             //Nos aseguramos de coger una habitación que tenga solamente una habitación adyacente
             //Así es más probable que consigamos una habitación que se ramifique
             do
@@ -154,16 +162,16 @@ public class LevelGeneration : MonoBehaviour
             }
             checkingPos = new Vector2(x, y);
         } while (takenPositions.Contains(checkingPos) || x >= gridSizeX || x < -gridSizeX || y >= gridSizeY || y < -gridSizeY);
-        
+
         return checkingPos;
     }
 
     //Comprueba el número de habitaciones adyacentes de la habitación
     int NumberOfNeighbors(Vector2 checkingPos, List<Vector2> usedPositions)
     {
-        int ret = 0; 
+        int ret = 0;
         if (usedPositions.Contains(checkingPos + Vector2.right))
-        { 
+        {
             ret++;
         }
         if (usedPositions.Contains(checkingPos + Vector2.left))
@@ -188,11 +196,12 @@ public class LevelGeneration : MonoBehaviour
         {
             if (room != null)
             {
-                Vector2 drawPos = room.gridPos;
+                Vector3 drawPos = room.gridPos;
 
                 drawPos.x *= 15;
                 drawPos.y *= 9;
-                
+                drawPos.z = 15;
+
                 MapSpriteSelector mapper = roomWhiteObj.GetComponent<MapSpriteSelector>();
                 mapper.type = room.type;
                 mapper.up = room.doorTop;
@@ -200,29 +209,28 @@ public class LevelGeneration : MonoBehaviour
                 mapper.right = room.doorRight;
                 mapper.left = room.doorLeft;
 
-
                 if (room.type == 3)
                 {
                     if (room.doorBot)
                     {
                         Instantiate(mapper.GetPreBossRoom(0), drawPos, Quaternion.identity);
-                        Instantiate(mapper.GetBossRoom(0), new Vector2(drawPos.x, drawPos.y + 9), Quaternion.identity);
+                        Instantiate(mapper.GetBossRoom(0), new Vector3(drawPos.x, drawPos.y + 9, 15), Quaternion.identity);
                     }
                     else if (room.doorLeft)
                     {
                         Instantiate(mapper.GetPreBossRoom(2), drawPos, Quaternion.identity);
-                        Instantiate(mapper.GetBossRoom(2), new Vector2(drawPos.x + 15, drawPos.y), Quaternion.identity);
+                        Instantiate(mapper.GetBossRoom(2), new Vector3(drawPos.x + 15, drawPos.y, 15), Quaternion.identity);
 
                     }
                     else if (room.doorRight)
                     {
                         Instantiate(mapper.GetPreBossRoom(3), drawPos, Quaternion.identity);
-                        Instantiate(mapper.GetBossRoom(3), new Vector2(drawPos.x - 15, drawPos.y), Quaternion.identity);
+                        Instantiate(mapper.GetBossRoom(3), new Vector3(drawPos.x - 15, drawPos.y, 15), Quaternion.identity);
                     }
                     else if (room.doorTop)
                     {
                         Instantiate(mapper.GetPreBossRoom(1), drawPos, Quaternion.identity);
-                        Instantiate(mapper.GetBossRoom(1), new Vector2(drawPos.x, drawPos.y-9), Quaternion.identity);
+                        Instantiate(mapper.GetBossRoom(1), new Vector3(drawPos.x, drawPos.y - 9, 15), Quaternion.identity);
                     }
 
                 }
@@ -231,38 +239,32 @@ public class LevelGeneration : MonoBehaviour
                     if (room.doorBot)
                     {
                         Instantiate(mapper.GetPreShopRoom(0), drawPos, Quaternion.identity);
-                        Instantiate(mapper.GetShopRoom(0), new Vector2(drawPos.x, drawPos.y + 9), Quaternion.identity);
+                        Instantiate(mapper.GetShopRoom(0), new Vector3(drawPos.x, drawPos.y + 9, 15), Quaternion.identity);
                     }
                     else if (room.doorLeft)
                     {
                         Instantiate(mapper.GetPreShopRoom(2), drawPos, Quaternion.identity);
-                        Instantiate(mapper.GetShopRoom(2), new Vector2(drawPos.x + 15, drawPos.y), Quaternion.identity);
+                        Instantiate(mapper.GetShopRoom(2), new Vector3(drawPos.x + 15, drawPos.y, 15), Quaternion.identity);
 
                     }
                     else if (room.doorRight)
                     {
                         Instantiate(mapper.GetPreShopRoom(3), drawPos, Quaternion.identity);
-                        Instantiate(mapper.GetShopRoom(3), new Vector2(drawPos.x - 15, drawPos.y), Quaternion.identity);
+                        Instantiate(mapper.GetShopRoom(3), new Vector3(drawPos.x - 15, drawPos.y, 15), Quaternion.identity);
                     }
                     else if (room.doorTop)
                     {
                         Instantiate(mapper.GetPreShopRoom(1), drawPos, Quaternion.identity);
-                        Instantiate(mapper.GetShopRoom(1), new Vector2(drawPos.x, drawPos.y - 9), Quaternion.identity);
+                        Instantiate(mapper.GetShopRoom(1), new Vector3(drawPos.x, drawPos.y - 9, 15), Quaternion.identity);
                     }
-
-                }
-                else if (room.type==1)
-                {
-                    GameObject firstRoom=Instantiate(mapper.getRoom(room.type), drawPos, Quaternion.identity);
-                    firstRoom.GetComponent<Room>().FirstRoom();
 
                 }
                 else
                 {
-                    Instantiate(mapper.getRoom(room.type), drawPos, Quaternion.identity);
+                    Instantiate(mapper.GetRoom(room.type), drawPos, Quaternion.identity);
                 }
             }
-            
+
         }
     }
 
@@ -276,7 +278,7 @@ public class LevelGeneration : MonoBehaviour
                 if (rooms[x, y] != null)
                 {
                     if (y - 1 < 0)
-                    { 
+                    {
                         rooms[x, y].doorBot = false;
                     }
                     else
@@ -284,7 +286,7 @@ public class LevelGeneration : MonoBehaviour
                         rooms[x, y].doorBot = (rooms[x, y - 1] != null);
                     }
                     if (y + 1 >= gridSizeY * 2)
-                    { 
+                    {
                         rooms[x, y].doorTop = false;
                     }
                     else
@@ -292,7 +294,7 @@ public class LevelGeneration : MonoBehaviour
                         rooms[x, y].doorTop = (rooms[x, y + 1] != null);
                     }
                     if (x - 1 < 0)
-                    { 
+                    {
                         rooms[x, y].doorLeft = false;
                     }
                     else
@@ -300,7 +302,7 @@ public class LevelGeneration : MonoBehaviour
                         rooms[x, y].doorLeft = (rooms[x - 1, y] != null);
                     }
                     if (x + 1 >= gridSizeX * 2)
-                    { 
+                    {
                         rooms[x, y].doorRight = false;
                     }
                     else
@@ -308,16 +310,17 @@ public class LevelGeneration : MonoBehaviour
                         rooms[x, y].doorRight = (rooms[x + 1, y] != null);
                     }
                 }
-                
+
             }
         }
     }
 
     void SetShopAndBoss()
     {
-        foreach(GeneratedRoom room in rooms)
+        foreach (GeneratedRoom room in rooms)
         {
-            if (room != null){
+            if (room != null)
+            {
                 if (!bossRoom)
                 {
                     if ((room.doorBot && !room.doorLeft && !room.doorRight && !room.doorTop) ||
@@ -341,11 +344,11 @@ public class LevelGeneration : MonoBehaviour
                     }
                 }
             }
-            
-            
+
+
         }
     }
 
 
-  
+
 }

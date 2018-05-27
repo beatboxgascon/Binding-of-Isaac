@@ -29,6 +29,7 @@ public class Boss : EnemigoDisparo
             source.PlayOneShot(roar, 5f);
         }
         FireRocket();
+        Die();
     }
 
 

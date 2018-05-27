@@ -2,7 +2,7 @@
 //Clase padre de la que heredaran todos los enemigos que se encuentran a lo largo del juego.
 public class Enemigo : MonoBehaviour
 {
-    protected float health;
+    public float health;
     protected float speed;
     protected AudioSource source;
     public AudioClip shoot;
@@ -14,7 +14,7 @@ public class Enemigo : MonoBehaviour
         jugador = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
-    public void doDamage(float damage)
+    public void DoDamage(float damage)
     {
         health -= damage;
     }
@@ -30,7 +30,7 @@ public class Enemigo : MonoBehaviour
         {
             GetComponent<SpriteRenderer>().color = new Color(1f, 0.1f, 0.1f, 1f);
             Invoke("Damage", 0.2F);
-            doDamage(jugador.GetDamage());
+            DoDamage(jugador.GetDamage());
             Destroy(coll.gameObject);
 
             source.PlayOneShot(hitSound, 5f);

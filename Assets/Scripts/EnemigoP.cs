@@ -33,11 +33,4 @@ public class EnemigoP : EnemigoDisparo
             }
         }
     }
-    void OnTriggerEnter2D(Collider2D coll)
-    {
-        if (coll.gameObject.tag == "Projectile")
-        {
-            health -= jugador.GetDamage();
-        }
-    }
 }

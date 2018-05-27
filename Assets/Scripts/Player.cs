@@ -44,18 +44,19 @@ public class Player : MonoBehaviour
     {
         camara = GameObject.FindGameObjectWithTag("MainCamera");
         lives = 5;
-        speed = 5f;
+        speed = 6f;
         fireRate = 0.7f;
-        damage = 3f;
+        damage = 5f;
         cargaObjeto = 0;
-        coins = 15;
+        coins = 0;
         Screen.SetResolution(1920, 1080, true);
         nextFire = 0f;
-        tipoProyectil = "doble";
+        tipoProyectil = "laser";
         UpdateTexts();
         invincible = false;
         anim = GetComponent<Animator>();
         temporalDamage = false;
+
     }
 
     void Update()
@@ -82,6 +83,7 @@ public class Player : MonoBehaviour
         }
 
     }
+
 
     private void Fire()
     {
@@ -179,10 +181,6 @@ public class Player : MonoBehaviour
         {
             FireTearShield();
         }
-        else if (tipoProyectil == "rebote")
-        {
-            FireTearBounce();
-        }
     }
 
     private void UpdateTexts()
@@ -268,16 +266,30 @@ public class Player : MonoBehaviour
         }
         else if (coll.gameObject.tag == "ObjetoLagrimaTienda")
         {
-            tipoProyectil = coll.gameObject.GetComponent<RandomTearObject>().getTear();
+            tipoProyectil = coll.gameObject.GetComponent<RandomTearObject>().GetTear();
+            if (tipoProyectil == "laser")
+            {
+
+                damage /= 100;
+            }
             Destroy(coll.gameObject);
             UpdateTexts();
             updateCoins(-15);
         }
         else if (coll.gameObject.tag == "ObjetoLagrima")
         {
-            tipoProyectil = coll.gameObject.GetComponent<RandomTearObject>().getTear();
+            tipoProyectil = coll.gameObject.GetComponent<RandomTearObject>().GetTear();
+            if (tipoProyectil == "laser")
+            {
+                damage /= 100;
+            }
             Destroy(coll.gameObject);
             UpdateTexts();
+        }
+        else  if (coll.gameObject.tag == "Moneda")
+        {
+            updateCoins(1);
+            Destroy(coll.gameObject);
         }
     }
 
@@ -457,39 +469,6 @@ public class Player : MonoBehaviour
 
     }
 
-    void FireTearBounce()
-    {
-        if (Time.time > nextFire)
-        {
-            nextFire = Time.time + fireRate;
-            if (Input.GetKey(KeyCode.UpArrow))
-            {
-                Instantiate(tearBounce, new Vector3(transform.position.x, transform.position.y + 0.02f, transform.position.z)
-                    , laserPrefabV.transform.rotation);
-                source.PlayOneShot(shoot, 5f);
-            }
-            else if (Input.GetKey(KeyCode.DownArrow))
-            {
-                Instantiate(tearBounce, new Vector3(transform.position.x, transform.position.y - 0.02f, transform.position.z)
-                    , laserPrefabV.transform.rotation);
-                source.PlayOneShot(shoot, 5f);
-            }
-            else if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                Instantiate(tearBounce, new Vector3(transform.position.x - 0.02f, transform.position.y, transform.position.z),
-                    laserPrefabH.transform.rotation);
-                source.PlayOneShot(shoot, 5f);
-            }
-
-            else if (Input.GetKey(KeyCode.RightArrow))
-            {
-                Instantiate(tearBounce, new Vector3(transform.position.x + 0.02f, transform.position.y, transform.position.z),
-                    laserPrefabH.transform.rotation);
-                source.PlayOneShot(shoot, 5f);
-            }
-            source.PlayOneShot(shoot, 5f);
-        }
-    }
     void FireDoubleTear()
     {
         if (Time.time > nextFire)
@@ -536,40 +515,44 @@ public class Player : MonoBehaviour
         if (Time.time > nextFire)
         {
             nextFire = Time.time + fireRate / 0.6f;
-            if (Input.GetKey(KeyCode.UpArrow))
-            {
-                Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
-                Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 120)));
-                Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 240)));
-                source.PlayOneShot(shoot, 5f);
-            }
-            else if (Input.GetKey(KeyCode.DownArrow))
-            {
-                Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
-                Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 120)));
-                Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 240)));
-                source.PlayOneShot(shoot, 5f);
-            }
-            else if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
-                Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 120)));
-                Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 240)));
-                source.PlayOneShot(shoot, 5f);
-            }
+            //if (Input.GetKey(KeyCode.UpArrow))
+            //{
+            //    Instantiate(tear, transform.position, Quaternion.Euler(0, 0, angle));
+            //    Instantiate(tear, transform.position, Quaternion.Euler(0, 0, angle + 45));
+            //    Instantiate(tear, transform.position, Quaternion.Euler(0, 0, angle - 45));
+            //    source.PlayOneShot(shoot, 5f);
+            //}
+            //else if (Input.GetKey(KeyCode.DownArrow))
+            //{
+            //    Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+            //    Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 120)));
+            //    Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 240)));
+            //    source.PlayOneShot(shoot, 5f);
+            //}
+            //else if (Input.GetKey(KeyCode.LeftArrow))
+            //{
+            //    Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+            //    Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 120)));
+            //    Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 240)));
+            //    source.PlayOneShot(shoot, 5f);
+            //}
 
-            else if (Input.GetKey(KeyCode.RightArrow))
-            {
-                Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
-                Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 120)));
-                Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 240)));
-                source.PlayOneShot(shoot, 5f);
-            }
+            //else if (Input.GetKey(KeyCode.RightArrow))
+            //{
+            //    Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+            //    Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 120)));
+            //    Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 240)));
+            //    source.PlayOneShot(shoot, 5f);
+            //}
+            Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+            Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, 45)));
+            Instantiate(tear, transform.position, Quaternion.Euler(new Vector3(0, 0, -45)));
             source.PlayOneShot(shoot, 5f);
         }
     }
     void FireLaser()
     {
+        
         if (Time.time > nextFire)
         {
             nextFire = Time.time + fireRate / 45;

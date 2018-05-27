@@ -5,7 +5,7 @@ using UnityEngine;
 public class MapSpriteSelector : MonoBehaviour
 {
 
-    public GameObject spU, spD, spR, spL,
+    public GameObject firstRoom, spU, spD, spR, spL,
             spUD, spRL, spUR, spUL, spDR, spDL,
             spULD, spRUL, spDRU, spLDR, spUDRL, 
             bossD, bossU, bossR, bossL,
@@ -113,12 +113,12 @@ public class MapSpriteSelector : MonoBehaviour
         return habitacion;
     }
 
-    public GameObject getRoom(int type)
+    public GameObject GetRoom(int type)
     {
         GameObject room = PickSprite(type);
         if (type == 1)
         {
-            room.GetComponent<Room>().FirstRoom();
+            room = firstRoom;
         }
         return room;
     }

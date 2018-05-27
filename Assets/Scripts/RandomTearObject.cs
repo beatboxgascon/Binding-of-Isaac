@@ -13,7 +13,7 @@ public class RandomTearObject : MonoBehaviour {
         GetComponent<SpriteRenderer>().sprite = spritesObjetos[currentSprite];
     }
 	
-    public string getTear()
+    public string GetTear()
     {
         string tearType="";
         switch (currentSprite)
