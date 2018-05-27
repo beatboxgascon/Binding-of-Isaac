@@ -12,27 +12,30 @@ public class LevelGeneration : MonoBehaviour
     public GameObject roomWhiteObj;
     void Start()
     {
+        // Comprueba que el número de habitaciones no sea mayor que el número de celdas disponibles
         if (numberOfRooms >= (worldSize.x * 2) * (worldSize.y * 2))
-        { // Comprueba que el número de habitaciones no sea mayor que el número de celdas disponibles
+        { 
             numberOfRooms = Mathf.RoundToInt((worldSize.x * 2) * (worldSize.y * 2));
         }
-        gridSizeX = Mathf.RoundToInt(worldSize.x); //note: these are half-extents
+        gridSizeX = Mathf.RoundToInt(worldSize.x); 
         gridSizeY = Mathf.RoundToInt(worldSize.y);
         CreateRooms(); //Coloca las habitaciones de forma aleatoria
         SetRoomDoors(); //Coloca las puertas para conectarlas a las habitaciones adyacentes
-        SetShopAndBoss();
+        SetShopAndBoss(); //Coloca las habitaciones del jefe y la tienda, además de sus entradas
         DrawMap(); //Dibuja las habitaciones en el mapa
     }
     void CreateRooms()
     {
-        //setup
+        
         rooms = new GeneratedRoom[gridSizeX * 2, gridSizeY * 2];
         rooms[gridSizeX, gridSizeY] = new GeneratedRoom(Vector2.zero, 1); //Crea la primera habitación en el centro del mapa
         takenPositions.Insert(0, Vector2.zero); //Pone esa posición como ocupada
         Vector2 checkPos = Vector2.zero;
+        
         //magic numbers
         float randomCompare = 0.2f, randomCompareStart = 0.2f, randomCompareEnd = 0.01f;
-        //add rooms
+        
+        //Añadir habitaciones
         for (int i = 0; i < numberOfRooms - 1; i++)
         {
             //Cuanto más avancemos en el bucle, menos probabilidades de que se ramifiquen las habitaciones
@@ -42,6 +45,7 @@ public class LevelGeneration : MonoBehaviour
            
             //Selecciona una posición
             checkPos = NewPosition();
+            
             //En caso de que tenga más de una habitación adyacente y RandomCompare sea mayor a un número entre 0 y 1
             //Intentará ramificarse
             if (NumberOfNeighbors(checkPos, takenPositions) > 1 && Random.value > randomCompare)
@@ -56,11 +60,13 @@ public class LevelGeneration : MonoBehaviour
                 if (iterations >= 50)
                     print("error: could not create with fewer neighbors than : " + NumberOfNeighbors(checkPos, takenPositions));
             }
+            
             //Añade las posiciones a la habitación y añade a la lista de posiciones ocupadas
             rooms[(int)checkPos.x + gridSizeX, (int)checkPos.y + gridSizeY] = new GeneratedRoom(checkPos, 0);
             takenPositions.Insert(0, checkPos);
         }
     }
+    
     //Una posición es válida cuando una es adyacente a una habitación que ya existe
     Vector2 NewPosition()
     {
@@ -103,18 +109,20 @@ public class LevelGeneration : MonoBehaviour
         } while (takenPositions.Contains(checkingPos) || x >= gridSizeX || x < -gridSizeX || y >= gridSizeY || y < -gridSizeY);
         return checkingPos;
     }
+    //Similar al anterior, con ligeros cambios
     Vector2 SelectiveNewPosition()
-    { //Similar al anterior, con ligeros cambios
+    { 
         int index = 0, inc = 0;
         int x = 0, y = 0;
         Vector2 checkingPos = Vector2.zero;
         do
         {
             inc = 0;
+            
+            //Nos aseguramos de coger una habitación que tenga solamente una habitación adyacente
+            //Así es más probable que consigamos una habitación que se ramifique
             do
             {
-                //Nos aseguramos de coger una habitación que tenga solamente una habitación adyacente
-                //Así es más probable que consigamos una habitación que se ramifique
                 index = Mathf.RoundToInt(Random.value * (takenPositions.Count - 1));
                 inc++;
             } while (NumberOfNeighbors(takenPositions[index], takenPositions) > 1 && inc < 100);
@@ -146,10 +154,7 @@ public class LevelGeneration : MonoBehaviour
             }
             checkingPos = new Vector2(x, y);
         } while (takenPositions.Contains(checkingPos) || x >= gridSizeX || x < -gridSizeX || y >= gridSizeY || y < -gridSizeY);
-        if (inc >= 100)
-        { // break loop if it takes too long: this loop isnt garuanteed to find solution, which is fine for this
-            print("Error: could not find position with only one neighbor");
-        }
+        
         return checkingPos;
     }
 
@@ -158,7 +163,7 @@ public class LevelGeneration : MonoBehaviour
     {
         int ret = 0; 
         if (usedPositions.Contains(checkingPos + Vector2.right))
-        { //using Vector.[direction] as short hands, for simplicity
+        { 
             ret++;
         }
         if (usedPositions.Contains(checkingPos + Vector2.left))
@@ -175,6 +180,7 @@ public class LevelGeneration : MonoBehaviour
         }
         return ret;
     }
+
     //Dibuja las habitaciones en el mapa
     void DrawMap()
     {
@@ -183,7 +189,8 @@ public class LevelGeneration : MonoBehaviour
             if (room != null)
             {
                 Vector2 drawPos = room.gridPos;
-                drawPos.x *= 15;//Distancia de separación de las habitaciones
+
+                drawPos.x *= 15;
                 drawPos.y *= 9;
                 
                 MapSpriteSelector mapper = roomWhiteObj.GetComponent<MapSpriteSelector>();
@@ -218,7 +225,8 @@ public class LevelGeneration : MonoBehaviour
                         Instantiate(mapper.GetBossRoom(1), new Vector2(drawPos.x, drawPos.y-9), Quaternion.identity);
                     }
 
-                } else if (room.type == 4)
+                }
+                else if (room.type == 4)
                 {
                     if (room.doorBot)
                     {
@@ -243,6 +251,12 @@ public class LevelGeneration : MonoBehaviour
                     }
 
                 }
+                else if (room.type==1)
+                {
+                    GameObject firstRoom=Instantiate(mapper.getRoom(room.type), drawPos, Quaternion.identity);
+                    firstRoom.GetComponent<Room>().FirstRoom();
+
+                }
                 else
                 {
                     Instantiate(mapper.getRoom(room.type), drawPos, Quaternion.identity);
@@ -262,7 +276,7 @@ public class LevelGeneration : MonoBehaviour
                 if (rooms[x, y] != null)
                 {
                     if (y - 1 < 0)
-                    { //check above
+                    { 
                         rooms[x, y].doorBot = false;
                     }
                     else
@@ -270,7 +284,7 @@ public class LevelGeneration : MonoBehaviour
                         rooms[x, y].doorBot = (rooms[x, y - 1] != null);
                     }
                     if (y + 1 >= gridSizeY * 2)
-                    { //check bellow
+                    { 
                         rooms[x, y].doorTop = false;
                     }
                     else
@@ -278,7 +292,7 @@ public class LevelGeneration : MonoBehaviour
                         rooms[x, y].doorTop = (rooms[x, y + 1] != null);
                     }
                     if (x - 1 < 0)
-                    { //check left
+                    { 
                         rooms[x, y].doorLeft = false;
                     }
                     else
@@ -286,7 +300,7 @@ public class LevelGeneration : MonoBehaviour
                         rooms[x, y].doorLeft = (rooms[x - 1, y] != null);
                     }
                     if (x + 1 >= gridSizeX * 2)
-                    { //check right
+                    { 
                         rooms[x, y].doorRight = false;
                     }
                     else

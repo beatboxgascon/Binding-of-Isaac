@@ -44,7 +44,7 @@ public class Player : MonoBehaviour
     {
         camara = GameObject.FindGameObjectWithTag("MainCamera");
         lives = 5;
-        speed = 10f;
+        speed = 5f;
         fireRate = 0.7f;
         damage = 3f;
         cargaObjeto = 0;
@@ -286,7 +286,7 @@ public class Player : MonoBehaviour
         this.room = room;
     }
 
-    public void updateCharges(int carga)
+    public void UpdateCharges(int carga)
     {
         if (cargaObjeto <= activeObject.GetCargas() && carga > 0)
             cargaObjeto += carga;
@@ -301,7 +301,7 @@ public class Player : MonoBehaviour
         UpdateTexts();
     }
 
-    public bool hasActiveObject()
+    public bool HasActiveObject()
     {
         return activeObject != null;
     }
@@ -352,6 +352,11 @@ public class Player : MonoBehaviour
     public float GetDamage()
     {
         return damage;
+    }
+
+    public float GetSpeed()
+    {
+        return speed;
     }
 
     private void LoseLife()

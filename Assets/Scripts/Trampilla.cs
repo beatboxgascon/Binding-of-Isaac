@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
+
 public class Trampilla : MonoBehaviour
 {
     public GameObject prueba;
@@ -10,4 +12,5 @@ public class Trampilla : MonoBehaviour
     {
 
     }
+
 }

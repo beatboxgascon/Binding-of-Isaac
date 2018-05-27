@@ -18,6 +18,7 @@ public class MapSpriteSelector : MonoBehaviour
 
     void Start()
     {
+        
     }
     GameObject PickSprite(int type)
     { //Selecciona el gameobject adecuado dependiendo de las puertas que tiene
@@ -114,7 +115,12 @@ public class MapSpriteSelector : MonoBehaviour
 
     public GameObject getRoom(int type)
     {
-        return PickSprite(type);
+        GameObject room = PickSprite(type);
+        if (type == 1)
+        {
+            room.GetComponent<Room>().FirstRoom();
+        }
+        return room;
     }
 
     public GameObject GetBossRoom(int type)
@@ -158,6 +164,11 @@ public class MapSpriteSelector : MonoBehaviour
         }
 
         return room;
+    }
+
+    public void FirstRoom()
+    {
+
     }
 
     public GameObject GetShopRoom(int type)

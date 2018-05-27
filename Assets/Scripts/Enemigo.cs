@@ -5,8 +5,8 @@ public class Enemigo : MonoBehaviour
     protected float health;
     protected float speed;
     protected AudioSource source;
-    protected AudioClip shoot;
-    protected AudioClip hitSound;
+    public AudioClip shoot;
+    public AudioClip hitSound;
     protected Player jugador;
 
     void Start()
@@ -32,6 +32,8 @@ public class Enemigo : MonoBehaviour
             Invoke("Damage", 0.2F);
             doDamage(jugador.GetDamage());
             Destroy(coll.gameObject);
+
+            source.PlayOneShot(hitSound, 5f);
         }
     }
 

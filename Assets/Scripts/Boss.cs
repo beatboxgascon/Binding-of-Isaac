@@ -30,19 +30,7 @@ public class Boss : EnemigoDisparo
         }
         FireRocket();
     }
-    void OnTriggerEnter2D(Collider2D coll)
-    {
-        if (coll.gameObject.tag == "Projectile")
-        {
-            health -= jugador.GetDamage();
-           // healthText.text = "Enemy Health: " + health;
-            if (health <= 0)
-            {
-                Destroy(gameObject);
-            }
-            Destroy(coll.gameObject);
-        }
-    }
+
 
     void FireRocket()
     {

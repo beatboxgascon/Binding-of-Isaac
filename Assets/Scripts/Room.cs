@@ -12,14 +12,15 @@ public class Room : MonoBehaviour
         SetObjectState(false);
         SetEnemiesState(false);
         addedCharge = false;
+        
     }
     void Update()
     {
         if (AreEnemiesLeft() && !addedCharge)
         {
             addedCharge = true;
-            //if (GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().hasActiveObject())
-            //    GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().updateCharges(1);
+            if (GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().HasActiveObject())
+                GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().UpdateCharges(1);
             SetObjectState(true);
         }
     }
@@ -41,14 +42,6 @@ public class Room : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter2D(Collision2D coll)
-    {
-        //if (coll.gameObject.tag == "TearBounce")
-        //{
-        //    coll.gameObject.GetComponent<TearBounce>().Rotate(135);
-        //    print("rebotasion");
-        //}
-    }
 
     public void SetEnemiesState(bool active)
     {
@@ -91,5 +84,18 @@ public class Room : MonoBehaviour
             }
         }
         return enemigosHabitacion.Count == muertos;
+    }
+
+    public void FirstRoom()
+    {
+        foreach (var item in enemigosHabitacion)
+        {
+            if (item != null)
+            {
+                print("AAAAAAA");
+                item.SetActive(true);
+                item.SetActive(false);
+            }
+        }
     }
 }
